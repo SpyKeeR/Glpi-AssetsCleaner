@@ -9,6 +9,8 @@
 [![License](https://img.shields.io/badge/License-GPLv2-green)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![Version](https://img.shields.io/badge/Version-1.0.0-orange)](https://github.com/pluginsGLPI/assetscleaner/releases)
 
+</div>
+
 ---
 
 ## 🇫🇷 Version Française
@@ -36,7 +38,6 @@ Puis : **Configuration > Plugins > Installer > Activer**
 
 ---
 
-</div>
 
 ---
 
