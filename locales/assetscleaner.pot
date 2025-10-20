@@ -1,0 +1,166 @@
+# GLPI Plugin - Assets Cleaner
+# Copyright (C) 2025
+# This file is distributed under the same license as the Assets Cleaner package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Assets Cleaner 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-20 22:30+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/AssetsCleaner.php:51
+#: src/AssetsCleaner.php:61
+#: src/ConfigAssetsCleaner.php:48
+msgid "Assets Cleaner"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:42
+#: src/ConfigAssetsCleaner.php:153
+msgid "Assets Cleaner Configuration"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:158
+msgid "Enable automatic cleaning"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:169
+msgid "Days before marking as inactive"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:175
+msgid "Number of days without inventory update before first action"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:181
+msgid "First action"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:186
+msgid "Set as Out of Order"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:189
+msgid "Move to Trash"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:197
+msgid "Enable second action"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:208
+msgid "Days in trash before purging"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:214
+msgid "Number of days in trash before permanent deletion"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:220
+msgid "Asset types to clean"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:223
+msgid "Printers"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:224
+msgid "Network Equipment"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:225
+msgid "Phones"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:237
+msgid "Delete related items"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:244
+msgid "Delete cartridges, network ports, etc. when deleting the asset"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:250
+msgid "Save"
+msgstr ""
+
+#: src/AssetsCleaner.php:75
+msgid "Clean old assets not updated by inventory"
+msgstr ""
+
+#: src/AssetsCleaner.php:80
+msgid "Purge old assets from trash"
+msgstr ""
+
+#: src/AssetsCleaner.php:100
+msgid "Assets Cleaner is disabled"
+msgstr ""
+
+#: src/AssetsCleaner.php:109
+#: src/AssetsCleaner.php:245
+msgid "No asset types configured"
+msgstr ""
+
+#: src/AssetsCleaner.php:119
+#: src/AssetsCleaner.php:255
+msgid "Invalid itemtype: %s"
+msgstr ""
+
+#: src/AssetsCleaner.php:150
+msgid "No %s to process"
+msgstr ""
+
+#: src/AssetsCleaner.php:177
+msgid "Set %s \"%s\" (ID: %d) as out of order and moved to trash"
+msgstr ""
+
+#: src/AssetsCleaner.php:185
+msgid "Set %s \"%s\" (ID: %d) as out of order (trash failed)"
+msgstr ""
+
+#: src/AssetsCleaner.php:193
+msgid "Moved %s \"%s\" (ID: %d) to trash (state change failed)"
+msgstr ""
+
+#: src/AssetsCleaner.php:200
+msgid "Out of order state not found, skipping assets"
+msgstr ""
+
+#: src/AssetsCleaner.php:207
+msgid "Processed %d %s"
+msgstr ""
+
+#: src/AssetsCleaner.php:236
+msgid "Second action is disabled"
+msgstr ""
+
+#: src/AssetsCleaner.php:280
+msgid "No trashed %s to purge"
+msgstr ""
+
+#: src/AssetsCleaner.php:300
+msgid "Purged %s \"%s\" (ID: %d)"
+msgstr ""
+
+#: src/AssetsCleaner.php:310
+msgid "Purged %d %s"
+msgstr ""
+
+#: src/AssetsCleaner.php:389
+msgid "  Deleted %d network ports"
+msgstr ""
+
+#: src/AssetsCleaner.php:412
+msgid "  Deleted infocom data"
+msgstr ""
+
+#: src/ProfileAssetsCleaner.php:40
+msgid "Assets Cleaner Rights"
+msgstr ""

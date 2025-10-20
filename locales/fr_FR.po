@@ -1,0 +1,166 @@
+# French translations for Assets Cleaner plugin
+# Copyright (C) 2025
+# This file is distributed under the same license as the Assets Cleaner package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Assets Cleaner 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-20 22:30+0100\n"
+"PO-Revision-Date: 2025-10-20 22:30+0100\n"
+"Last-Translator: \n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/AssetsCleaner.php:51
+#: src/AssetsCleaner.php:61
+#: src/ConfigAssetsCleaner.php:48
+msgid "Assets Cleaner"
+msgstr "Nettoyeur d'actifs"
+
+#: src/ConfigAssetsCleaner.php:42
+#: src/ConfigAssetsCleaner.php:153
+msgid "Assets Cleaner Configuration"
+msgstr "Configuration du nettoyeur d'actifs"
+
+#: src/ConfigAssetsCleaner.php:158
+msgid "Enable automatic cleaning"
+msgstr "Activer le nettoyage automatique"
+
+#: src/ConfigAssetsCleaner.php:169
+msgid "Days before marking as inactive"
+msgstr "Jours avant marquage comme inactif"
+
+#: src/ConfigAssetsCleaner.php:175
+msgid "Number of days without inventory update before first action"
+msgstr "Nombre de jours sans mise à jour d'inventaire avant la première action"
+
+#: src/ConfigAssetsCleaner.php:181
+msgid "First action"
+msgstr "Première action"
+
+#: src/ConfigAssetsCleaner.php:186
+msgid "Set as Out of Order"
+msgstr "Marquer comme Hors Service"
+
+#: src/ConfigAssetsCleaner.php:189
+msgid "Move to Trash"
+msgstr "Déplacer à la corbeille"
+
+#: src/ConfigAssetsCleaner.php:197
+msgid "Enable second action"
+msgstr "Activer la seconde action"
+
+#: src/ConfigAssetsCleaner.php:208
+msgid "Days in trash before purging"
+msgstr "Jours en corbeille avant purge"
+
+#: src/ConfigAssetsCleaner.php:214
+msgid "Number of days in trash before permanent deletion"
+msgstr "Nombre de jours en corbeille avant suppression définitive"
+
+#: src/ConfigAssetsCleaner.php:220
+msgid "Asset types to clean"
+msgstr "Types d'actifs à nettoyer"
+
+#: src/ConfigAssetsCleaner.php:223
+msgid "Printers"
+msgstr "Imprimantes"
+
+#: src/ConfigAssetsCleaner.php:224
+msgid "Network Equipment"
+msgstr "Équipements réseau"
+
+#: src/ConfigAssetsCleaner.php:225
+msgid "Phones"
+msgstr "Téléphones"
+
+#: src/ConfigAssetsCleaner.php:237
+msgid "Delete related items"
+msgstr "Supprimer les éléments liés"
+
+#: src/ConfigAssetsCleaner.php:244
+msgid "Delete cartridges, network ports, etc. when deleting the asset"
+msgstr "Supprimer les cartouches, ports réseau, etc. lors de la suppression de l'actif"
+
+#: src/ConfigAssetsCleaner.php:250
+msgid "Save"
+msgstr "Enregistrer"
+
+#: src/AssetsCleaner.php:75
+msgid "Clean old assets not updated by inventory"
+msgstr "Nettoyer les anciens actifs non mis à jour par inventaire"
+
+#: src/AssetsCleaner.php:80
+msgid "Purge old assets from trash"
+msgstr "Purger les anciens actifs de la corbeille"
+
+#: src/AssetsCleaner.php:100
+msgid "Assets Cleaner is disabled"
+msgstr "Le nettoyeur d'actifs est désactivé"
+
+#: src/AssetsCleaner.php:109
+#: src/AssetsCleaner.php:245
+msgid "No asset types configured"
+msgstr "Aucun type d'actif configuré"
+
+#: src/AssetsCleaner.php:119
+#: src/AssetsCleaner.php:255
+msgid "Invalid itemtype: %s"
+msgstr "Type d'élément invalide : %s"
+
+#: src/AssetsCleaner.php:150
+msgid "No %s to process"
+msgstr "Aucun %s à traiter"
+
+#: src/AssetsCleaner.php:177
+msgid "Set %s \"%s\" (ID: %d) as out of order and moved to trash"
+msgstr "%s \"%s\" (ID: %d) marqué hors parc et déplacé à la corbeille"
+
+#: src/AssetsCleaner.php:185
+msgid "Set %s \"%s\" (ID: %d) as out of order (trash failed)"
+msgstr "%s \"%s\" (ID: %d) marqué hors parc (échec mise en corbeille)"
+
+#: src/AssetsCleaner.php:193
+msgid "Moved %s \"%s\" (ID: %d) to trash (state change failed)"
+msgstr "%s \"%s\" (ID: %d) déplacé à la corbeille (échec changement statut)"
+
+#: src/AssetsCleaner.php:200
+msgid "Out of order state not found, skipping assets"
+msgstr "État hors parc non trouvé, actifs ignorés"
+
+#: src/AssetsCleaner.php:207
+msgid "Processed %d %s"
+msgstr "%d %s traité(s)"
+
+#: src/AssetsCleaner.php:236
+msgid "Second action is disabled"
+msgstr "La seconde action est désactivée"
+
+#: src/AssetsCleaner.php:280
+msgid "No trashed %s to purge"
+msgstr "Aucun %s en corbeille à purger"
+
+#: src/AssetsCleaner.php:300
+msgid "Purged %s \"%s\" (ID: %d)"
+msgstr "%s \"%s\" (ID: %d) purgé"
+
+#: src/AssetsCleaner.php:310
+msgid "Purged %d %s"
+msgstr "%d %s purgé(s)"
+
+#: src/AssetsCleaner.php:389
+msgid "  Deleted %d network ports"
+msgstr "  %d port(s) réseau supprimé(s)"
+
+#: src/AssetsCleaner.php:412
+msgid "  Deleted infocom data"
+msgstr "  Données infocom supprimées"
+
+#: src/ProfileAssetsCleaner.php:40
+msgid "Assets Cleaner Rights"
+msgstr "Droits du nettoyeur d'actifs"
