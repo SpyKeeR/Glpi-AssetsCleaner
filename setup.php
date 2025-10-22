@@ -24,7 +24,7 @@
  * -------------------------------------------------------------------------
  * @copyright Copyright (C) 2025 by SpyKeeR.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
- * @link      https://github.com/SpyKeeR/AssetsCleaner
+ * @link      https://github.com/SpyKeeR/Glpi-AssetsCleaner
  * -------------------------------------------------------------------------
  */
 
@@ -35,7 +35,7 @@ use GlpiPlugin\Assetscleaner\ProfileAssetsCleaner;
 
 use function Safe\define;
 
-define('PLUGIN_ASSETSCLEANER_VERSION', '1.0.0');
+define('PLUGIN_ASSETSCLEANER_VERSION', '1.0.1');
 
 // Minimal GLPI version, inclusive
 define('PLUGIN_ASSETSCLEANER_MIN_GLPI', '11.0.0');
@@ -90,7 +90,7 @@ function plugin_version_assetscleaner()
         'version'      => PLUGIN_ASSETSCLEANER_VERSION,
         'author'       => 'SpyKeeR',
         'license'      => 'GPLv2+',
-        'homepage'     => 'https://github.com/SpyKeeR/AssetsCleaner',
+        'homepage'     => 'https://github.com/SpyKeeR/Glpi-AssetsCleaner',
         'requirements' => [
             'glpi' => [
                 'min' => PLUGIN_ASSETSCLEANER_MIN_GLPI,

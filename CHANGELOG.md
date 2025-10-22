@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🇫🇷 Version Française
 
+### [1.0.1] - 2025-10-22 - Correctifs critiques 🔧
+
+**Corrections :**
+- 🐛 **CRITIQUE** : Correction de l'erreur "Error saving configuration"
+  - La fonction `Config::setConfigurationValues()` est maintenant appelée correctement (une seule fois avec toutes les valeurs)
+  - Suppression de la logique de boucle qui causait les échecs de sauvegarde
+- 🧹 Suppression de tous les `error_log()` qui causaient des problèmes de token CRLF
+- 🔗 Uniformisation des URLs GitHub dans tous les fichiers d'en-tête
+- 📦 Correction du nom du package Composer : `spykeer/glpi-assetscleaner`
+- 🌍 Mise à jour des fichiers de traduction (.po et .pot)
+- 📝 Ajout de documentation développeur (DEVELOPMENT.md)
+
+**Améliorations :**
+- Code plus propre et maintenable
+- Gestion d'erreurs simplifiée
+- Documentation technique complète
+
 ### [1.0.0] - 2025-10-20 - Version Initiale 🎉
 
 **Nouveautés :**
@@ -38,6 +55,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## 🇬🇧 English Version
+
+### [1.0.1] - 2025-10-22 - Critical Fixes 🔧
+
+#### Fixed
+- 🐛 **CRITICAL**: Fixed "Error saving configuration" issue
+  - `Config::setConfigurationValues()` now called correctly (once with all values)
+  - Removed loop logic that was causing save failures
+- 🧹 Removed all `error_log()` calls causing CRLF token issues
+- 🔗 Standardized GitHub URLs across all header files
+- 📦 Fixed Composer package name: `spykeer/glpi-assetscleaner`
+- 🌍 Updated translation files (.po and .pot)
+- 📝 Added developer documentation (DEVELOPMENT.md)
+
+#### Improved
+- Cleaner and more maintainable code
+- Simplified error handling
+- Comprehensive technical documentation
 
 ## [1.0.0] - 2025-10-20
 

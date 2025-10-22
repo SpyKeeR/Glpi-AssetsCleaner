@@ -24,7 +24,7 @@
  * -------------------------------------------------------------------------
  * @copyright Copyright (C) 2025 by SpyKeeR.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
- * @link      https://github.com/SpyKeeR/AssetsCleaner
+ * @link      https://github.com/SpyKeeR/Glpi-AssetsCleaner
  * -------------------------------------------------------------------------
  */
 

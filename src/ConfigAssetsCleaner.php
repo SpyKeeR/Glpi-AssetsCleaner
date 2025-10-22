@@ -22,9 +22,9 @@
  * You should have received a copy of the GNU General Public License
  * along with AssetsCleaner. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2025 by AssetsCleaner plugin team.
+ * @copyright Copyright (C) 2025 by SpyKeeR.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
- * @link      https://github.com/pluginsGLPI/assetscleaner
+ * @link      https://github.com/SpyKeeR/Glpi-AssetsCleaner
  * -------------------------------------------------------------------------
  */
 
@@ -264,30 +264,13 @@ class ConfigAssetsCleaner extends CommonGLPI
      */
     public static function saveConfig($input)
     {
-        global $DB;
-        
         $values = [];
         
-        // Validate required fields
-        if (!isset($input['inactive_delay_days']) || !is_numeric($input['inactive_delay_days'])) {
-            error_log("AssetsCleaner: Invalid inactive_delay_days");
-            return false;
-        }
-        
-        if (!isset($input['trash_delay_days']) || !is_numeric($input['trash_delay_days'])) {
-            error_log("AssetsCleaner: Invalid trash_delay_days");
-            return false;
-        }
-        
-        if (!isset($input['first_action']) || !in_array($input['first_action'], ['out_of_order', 'trash'])) {
-            error_log("AssetsCleaner: Invalid first_action");
-            return false;
-        }
-        
+        // Validate and prepare values
         $values['enabled'] = isset($input['enabled']) ? (int)$input['enabled'] : 0;
-        $values['inactive_delay_days'] = max(1, (int)$input['inactive_delay_days']);
-        $values['trash_delay_days'] = max(1, (int)$input['trash_delay_days']);
-        $values['first_action'] = $input['first_action'];
+        $values['inactive_delay_days'] = isset($input['inactive_delay_days']) ? max(1, (int)$input['inactive_delay_days']) : 30;
+        $values['trash_delay_days'] = isset($input['trash_delay_days']) ? max(1, (int)$input['trash_delay_days']) : 60;
+        $values['first_action'] = isset($input['first_action']) && in_array($input['first_action'], ['out_of_order', 'trash']) ? $input['first_action'] : 'out_of_order';
         $values['second_action_enabled'] = isset($input['second_action_enabled']) ? (int)$input['second_action_enabled'] : 0;
         $values['second_action'] = 'purge';
         $values['delete_related_items'] = isset($input['delete_related_items']) ? (int)$input['delete_related_items'] : 0;
@@ -298,19 +281,8 @@ class ConfigAssetsCleaner extends CommonGLPI
         } else {
             $values['asset_types'] = json_encode([]);
         }
-
-        error_log("AssetsCleaner: Trying to save values: " . print_r($values, true));
         
-        // Try to save each value individually to identify which one fails
-        foreach ($values as $key => $value) {
-            $result = Config::setConfigurationValues('plugin:assetscleaner', [$key => $value]);
-            if (!$result) {
-                error_log("AssetsCleaner: Failed to save key: $key with value: $value");
-                return false;
-            }
-        }
-        
-        error_log("AssetsCleaner: Configuration saved successfully");
-        return true;
+        // Save all configuration values at once
+        return Config::setConfigurationValues('plugin:assetscleaner', $values);
     }
 }
