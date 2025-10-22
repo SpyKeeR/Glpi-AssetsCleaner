@@ -264,13 +264,16 @@ class AssetsCleaner extends CommonDBTM
 
             // Build query to find old trashed assets
             $query = [
-                'SELECT' => ['id', 'name', 'date_mod'],
+                'SELECT' => ['id', 'name', 'last_inventory_update'],
                 'FROM'   => $table,
                 'WHERE'  => [
                     'is_deleted'  => 1,
                     'is_template' => 0,
                     'is_dynamic'  => 1, // Only assets managed by inventory
-                    'date_mod'    => ['<', $cutoff_date],
+                    'OR' => [
+                        ['last_inventory_update' => ['<', $cutoff_date]],
+                        ['last_inventory_update' => null],
+                    ],
                 ],
             ];
 
