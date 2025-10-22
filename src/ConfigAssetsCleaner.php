@@ -31,7 +31,7 @@
 namespace GlpiPlugin\Assetscleaner;
 
 use CommonGLPI;
-use Config as GlpiConfig;
+use Config;
 use Html;
 use Session;
 
@@ -85,7 +85,7 @@ class ConfigAssetsCleaner extends CommonGLPI
      */
     public static function getConfigValue($key)
     {
-        $config = GlpiConfig::getConfigurationValues('plugin:Assetscleaner');
+        $config = Config::getConfigurationValues('plugin:assetscleaner');
         $defaults = self::getDefaults();
         
         if (isset($config[$key])) {
@@ -113,7 +113,7 @@ class ConfigAssetsCleaner extends CommonGLPI
             $value = json_encode($value);
         }
         
-        return GlpiConfig::setConfigurationValues('plugin:Assetscleaner', [$key => $value]);
+        return Config::setConfigurationValues('plugin:assetscleaner', [$key => $value]);
     }
 
     /**
@@ -129,7 +129,7 @@ class ConfigAssetsCleaner extends CommonGLPI
             return false;
         }
 
-        $config = GlpiConfig::getConfigurationValues('plugin:Assetscleaner');
+        $config = Config::getConfigurationValues('plugin:assetscleaner');
         $defaults = self::getDefaults();
         
         // Merge with defaults
@@ -265,18 +265,23 @@ class ConfigAssetsCleaner extends CommonGLPI
      */
     public static function saveConfig($input)
     {
+        global $DB;
+        
         $values = [];
         
         // Validate required fields
         if (!isset($input['inactive_delay_days']) || !is_numeric($input['inactive_delay_days'])) {
+            error_log("AssetsCleaner: Invalid inactive_delay_days");
             return false;
         }
         
         if (!isset($input['trash_delay_days']) || !is_numeric($input['trash_delay_days'])) {
+            error_log("AssetsCleaner: Invalid trash_delay_days");
             return false;
         }
         
         if (!isset($input['first_action']) || !in_array($input['first_action'], ['out_of_order', 'trash'])) {
+            error_log("AssetsCleaner: Invalid first_action");
             return false;
         }
         
@@ -295,6 +300,18 @@ class ConfigAssetsCleaner extends CommonGLPI
             $values['asset_types'] = json_encode([]);
         }
 
-        return GlpiConfig::setConfigurationValues('plugin:Assetscleaner', $values);
+        error_log("AssetsCleaner: Trying to save values: " . print_r($values, true));
+        
+        // Try to save each value individually to identify which one fails
+        foreach ($values as $key => $value) {
+            $result = Config::setConfigurationValues('plugin:assetscleaner', [$key => $value]);
+            if (!$result) {
+                error_log("AssetsCleaner: Failed to save key: $key with value: $value");
+                return false;
+            }
+        }
+        
+        error_log("AssetsCleaner: Configuration saved successfully");
+        return true;
     }
 }

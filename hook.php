@@ -53,7 +53,7 @@ function plugin_assetscleaner_install()
         }
     }
     
-    Config::setConfigurationValues('plugin:Assetscleaner', $config_values);
+    Config::setConfigurationValues('plugin:assetscleaner', $config_values);
 
     // Register the cron tasks
     CronTask::Register(
@@ -88,7 +88,7 @@ function plugin_assetscleaner_uninstall()
 {
     // Delete configuration
     $config = new Config();
-    $config->deleteConfigurationValues('plugin:Assetscleaner');
+    $config->deleteConfigurationValues('plugin:assetscleaner');
 
     // Unregister cron tasks
     $cron = new CronTask();
