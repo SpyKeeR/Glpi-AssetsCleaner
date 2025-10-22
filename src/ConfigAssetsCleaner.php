@@ -69,9 +69,7 @@ class ConfigAssetsCleaner extends CommonGLPI
             'enabled'                => 0,
             'inactive_delay_days'    => 30,
             'trash_delay_days'       => 60,
-            'first_action'           => 'out_of_order', // out_of_order or trash
             'second_action_enabled'  => 1,
-            'second_action'          => 'purge', // purge or nothing
             'asset_types'            => ['Printer'], // Printer, NetworkEquipment, Phone
             'delete_related_items'   => 1,
         ];
@@ -166,35 +164,19 @@ class ConfigAssetsCleaner extends CommonGLPI
 
         // Inactive delay for first action
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Days before marking as inactive', 'assetscleaner') . "</td>";
+        echo "<td>" . __('Days before moving to trash', 'assetscleaner') . "</td>";
         echo "<td>";
         echo "<input type='number' name='inactive_delay_days' value='" 
              . $config['inactive_delay_days'] . "' min='1' max='365'>";
         echo "</td>";
         echo "<td colspan='2'>";
-        echo "<i>" . __('Number of days without inventory update before first action (only applies to automatically inventoried assets)', 'assetscleaner') . "</i>";
+        echo "<i>" . __('Number of days without inventory update before moving to trash (only applies to automatically inventoried assets)', 'assetscleaner') . "</i>";
         echo "</td>";
         echo "</tr>";
 
-        // First action
+        // Enable second action (purge)
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('First action', 'assetscleaner') . "</td>";
-        echo "<td>";
-        echo "<select name='first_action'>";
-        echo "<option value='out_of_order' " 
-             . ($config['first_action'] == 'out_of_order' ? 'selected' : '') . ">"
-             . __('Set as Decommissioned', 'assetscleaner') . "</option>";
-        echo "<option value='trash' " 
-             . ($config['first_action'] == 'trash' ? 'selected' : '') . ">"
-             . __('Move to Trash', 'assetscleaner') . "</option>";
-        echo "</select>";
-        echo "</td>";
-        echo "<td colspan='2'></td>";
-        echo "</tr>";
-
-        // Enable second action
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Enable second action', 'assetscleaner') . "</td>";
+        echo "<td>" . __('Enable automatic purge', 'assetscleaner') . "</td>";
         echo "<td>";
         echo "<input type='hidden' name='second_action_enabled' value='0'>";
         echo "<input type='checkbox' name='second_action_enabled' value='1' " 
@@ -270,9 +252,7 @@ class ConfigAssetsCleaner extends CommonGLPI
         $values['enabled'] = isset($input['enabled']) ? (int)$input['enabled'] : 0;
         $values['inactive_delay_days'] = isset($input['inactive_delay_days']) ? max(1, (int)$input['inactive_delay_days']) : 30;
         $values['trash_delay_days'] = isset($input['trash_delay_days']) ? max(1, (int)$input['trash_delay_days']) : 60;
-        $values['first_action'] = isset($input['first_action']) && in_array($input['first_action'], ['out_of_order', 'trash']) ? $input['first_action'] : 'out_of_order';
         $values['second_action_enabled'] = isset($input['second_action_enabled']) ? (int)$input['second_action_enabled'] : 0;
-        $values['second_action'] = 'purge';
         $values['delete_related_items'] = isset($input['delete_related_items']) ? (int)$input['delete_related_items'] : 0;
         
         // Handle asset types array

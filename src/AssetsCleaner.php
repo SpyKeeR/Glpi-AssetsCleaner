@@ -85,7 +85,7 @@ class AssetsCleaner extends CommonDBTM
 
     /**
      * Execute the first cron task: Clean old assets
-     * Mark assets as out of order or move them to trash if not updated by inventory
+     * Move to trash assets not updated by inventory for X days
      *
      * @param CronTask $task Object of CronTask class for log / stat
      * @return int >0 : done, <0 : to be run again, 0 : nothing to do
@@ -102,7 +102,6 @@ class AssetsCleaner extends CommonDBTM
         }
 
         $inactive_delay = ConfigAssetsCleaner::getConfigValue('inactive_delay_days');
-        $first_action = ConfigAssetsCleaner::getConfigValue('first_action');
         $asset_types = ConfigAssetsCleaner::getConfigValue('asset_types');
         
         if (empty($asset_types)) {
@@ -112,6 +111,8 @@ class AssetsCleaner extends CommonDBTM
 
         $total_processed = 0;
         $cutoff_date = date('Y-m-d H:i:s', strtotime("-{$inactive_delay} days"));
+        
+        $task->log("Cutoff date for inactive assets: $cutoff_date (older than {$inactive_delay} days)");
 
         foreach ($asset_types as $itemtype) {
             // Validate itemtype
@@ -122,92 +123,75 @@ class AssetsCleaner extends CommonDBTM
 
             $table = getTableForItemType($itemtype);
             if (!$table) {
+                $task->log("No table found for itemtype: $itemtype");
                 continue;
             }
 
-            // Build query to find old assets
+            // Check if table has the required column
+            if (!$DB->fieldExists($table, 'last_inventory_update')) {
+                $task->log("Warning: Table $table does not have 'last_inventory_update' column, skipping $itemtype");
+                continue;
+            }
+
+            // Build query to find old assets not in trash
             $query = [
                 'SELECT' => ['id', 'name', 'last_inventory_update'],
                 'FROM'   => $table,
                 'WHERE'  => [
-                    'is_deleted'  => 0,
-                    'is_template' => 0,
-                    'is_dynamic'  => 1, // Only assets managed by inventory
-                    'OR' => [
-                        ['last_inventory_update' => ['<', $cutoff_date]],
-                        ['last_inventory_update' => null],
-                    ],
+                    'is_deleted'  => 0,  // Not already in trash
+                    'is_template' => 0,  // Not a template
+                    'is_dynamic'  => 1,  // Only assets managed by inventory
+                    'last_inventory_update' => ['<', $cutoff_date],  // Older than cutoff
                 ],
             ];
-
-            // Exclude assets already in trash or already marked as out of order
-            $query['WHERE'][] = ['states_id' => ['>', 0]]; // Not already out of order
 
             $iterator = $DB->request($query);
             $count = count($iterator);
 
+            $task->log(sprintf("Found %d %s to process", $count, $itemtype::getTypeName($count)));
+
             if ($count == 0) {
-                $task->log(sprintf(
-                    __('No %s to process', 'assetscleaner'),
-                    $itemtype::getTypeName(2)
-                ));
                 continue;
             }
 
             $processed = 0;
+            $failed = 0;
+            
             foreach ($iterator as $data) {
                 $item = new $itemtype();
-                $item->getFromDB($data['id']);
-
-                // Get the "Décommissionné (Auto)" state ID
-                $state_id = self::getOutOfOrderStateId();
                 
-                if ($state_id > 0) {
-                    // First, update the state to "Décommissionné (Auto)"
-                    $update_success = $item->update([
-                        'id' => $data['id'],
-                        'states_id' => $state_id,
-                    ]);
-                    
-                    // Then, move to trash
-                    $trash_success = $item->delete(['id' => $data['id']], 0); // 0 = move to trash
-                    
-                    if ($update_success && $trash_success) {
-                        $processed++;
-                        $task->log(sprintf(
-                            __('Set %s "%s" (ID: %d) as decommissioned and moved to trash', 'assetscleaner'),
-                            $itemtype::getTypeName(1),
-                            $data['name'],
-                            $data['id']
-                        ));
-                    } elseif ($update_success) {
-                        $processed++;
-                        $task->log(sprintf(
-                            __('Set %s "%s" (ID: %d) as decommissioned (trash failed)', 'assetscleaner'),
-                            $itemtype::getTypeName(1),
-                            $data['name'],
-                            $data['id']
-                        ));
-                    } elseif ($trash_success) {
-                        $processed++;
-                        $task->log(sprintf(
-                            __('Moved %s "%s" (ID: %d) to trash (state change failed)', 'assetscleaner'),
-                            $itemtype::getTypeName(1),
-                            $data['name'],
-                            $data['id']
-                        ));
-                    }
+                if (!$item->getFromDB($data['id'])) {
+                    $failed++;
+                    continue;
+                }
+
+                // Move to trash (0 = soft delete, move to trash)
+                if ($item->delete(['id' => $data['id']], 0)) {
+                    $processed++;
+                    $task->log(sprintf(
+                        "✓ Moved to trash: %s \"%s\" (ID: %d, last update: %s)",
+                        $itemtype::getTypeName(1),
+                        $data['name'],
+                        $data['id'],
+                        $data['last_inventory_update'] ?? 'never'
+                    ));
                 } else {
-                    $task->log(__('Decommissioned state not found, skipping assets', 'assetscleaner'), true);
-                    break; // Stop processing this itemtype if state not found
+                    $failed++;
+                    $task->log(sprintf(
+                        "✗ Failed to move to trash: %s \"%s\" (ID: %d)",
+                        $itemtype::getTypeName(1),
+                        $data['name'],
+                        $data['id']
+                    ));
                 }
             }
 
             $total_processed += $processed;
             $task->log(sprintf(
-                __('Processed %d %s', 'assetscleaner'),
+                "Summary for %s: %d moved to trash, %d failed",
+                $itemtype::getTypeName(2),
                 $processed,
-                $itemtype::getTypeName($processed)
+                $failed
             ));
         }
 
@@ -249,6 +233,8 @@ class AssetsCleaner extends CommonDBTM
 
         $total_purged = 0;
         $cutoff_date = date('Y-m-d H:i:s', strtotime("-{$trash_delay} days"));
+        
+        $task->log("Purge cutoff date: $cutoff_date (in trash for more than {$trash_delay} days)");
 
         foreach ($asset_types as $itemtype) {
             // Validate itemtype
@@ -259,50 +245,68 @@ class AssetsCleaner extends CommonDBTM
 
             $table = getTableForItemType($itemtype);
             if (!$table) {
+                $task->log("No table found for itemtype: $itemtype");
+                continue;
+            }
+
+            // Check if table has the required column
+            if (!$DB->fieldExists($table, 'last_inventory_update')) {
+                $task->log("Warning: Table $table does not have 'last_inventory_update' column, skipping $itemtype");
                 continue;
             }
 
             // Build query to find old trashed assets
+            // An asset in trash with old last_inventory_update means it was put in trash long ago
             $query = [
                 'SELECT' => ['id', 'name', 'last_inventory_update'],
                 'FROM'   => $table,
                 'WHERE'  => [
-                    'is_deleted'  => 1,
-                    'is_template' => 0,
-                    'is_dynamic'  => 1, // Only assets managed by inventory
-                    'OR' => [
-                        ['last_inventory_update' => ['<', $cutoff_date]],
-                        ['last_inventory_update' => null],
-                    ],
+                    'is_deleted'  => 1,  // Already in trash
+                    'is_template' => 0,  // Not a template
+                    'is_dynamic'  => 1,  // Only assets managed by inventory
+                    'last_inventory_update' => ['<', $cutoff_date],  // Older than cutoff
                 ],
             ];
 
             $iterator = $DB->request($query);
             $count = count($iterator);
+            
+            $task->log(sprintf("Found %d trashed %s to purge", $count, $itemtype::getTypeName($count)));
 
             if ($count == 0) {
-                $task->log(sprintf(
-                    __('No trashed %s to purge', 'assetscleaner'),
-                    $itemtype::getTypeName(2)
-                ));
                 continue;
             }
 
             $purged = 0;
+            $failed = 0;
+            
             foreach ($iterator as $data) {
                 $item = new $itemtype();
-                $item->getFromDB($data['id']);
+                
+                if (!$item->getFromDB($data['id'])) {
+                    $failed++;
+                    continue;
+                }
 
                 // Delete related items if configured
                 if ($delete_related) {
                     self::deleteRelatedItems($item, $task);
                 }
 
-                // Permanently delete (purge)
-                if ($item->delete(['id' => $data['id']], 1)) { // 1 = force purge
+                // Permanently delete (purge) - 1 = force purge
+                if ($item->delete(['id' => $data['id']], 1)) {
                     $purged++;
                     $task->log(sprintf(
-                        __('Purged %s "%s" (ID: %d)', 'assetscleaner'),
+                        "✓ Purged: %s \"%s\" (ID: %d, last update: %s)",
+                        $itemtype::getTypeName(1),
+                        $data['name'],
+                        $data['id'],
+                        $data['last_inventory_update'] ?? 'never'
+                    ));
+                } else {
+                    $failed++;
+                    $task->log(sprintf(
+                        "✗ Failed to purge: %s \"%s\" (ID: %d)",
                         $itemtype::getTypeName(1),
                         $data['name'],
                         $data['id']
@@ -312,47 +316,16 @@ class AssetsCleaner extends CommonDBTM
 
             $total_purged += $purged;
             $task->log(sprintf(
-                __('Purged %d %s', 'assetscleaner'),
+                "Summary for %s: %d purged, %d failed",
+                $itemtype::getTypeName(2),
                 $purged,
-                $itemtype::getTypeName($purged)
+                $failed
             ));
         }
 
         if ($total_purged > 0) {
             $task->setVolume($total_purged);
             return 1;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Get the "Out of Order" state ID
-     *
-     * @return int State ID or 0 if not found
-     */
-    protected static function getOutOfOrderStateId()
-    {
-        global $DB;
-
-        // Try to find a state with completename containing "Décommissionné (Auto)" first, then others
-        $iterator = $DB->request([
-            'SELECT' => ['id'],
-            'FROM'   => 'glpi_states',
-            'WHERE'  => [
-                'OR' => [
-                    ['completename' => ['LIKE', '%Décommissionné (Auto)%']],
-                    ['completename' => ['LIKE', '%décommissionné%']],
-                    ['completename' => ['LIKE', '%hors%service%']],
-                    ['completename' => ['LIKE', '%out%order%']],
-                ],
-            ],
-            'LIMIT'  => 1,
-        ]);
-
-        if (count($iterator) > 0) {
-            $data = $iterator->current();
-            return $data['id'];
         }
 
         return 0;
