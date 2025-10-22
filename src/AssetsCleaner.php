@@ -112,7 +112,9 @@ class AssetsCleaner extends CommonDBTM
         $total_processed = 0;
         $cutoff_date = date('Y-m-d H:i:s', strtotime("-{$inactive_delay} days"));
         
-        $task->log("Cutoff date for inactive assets: $cutoff_date (older than {$inactive_delay} days)");
+        $log_msg = "Cutoff date for inactive assets: $cutoff_date (older than {$inactive_delay} days)";
+        $task->log($log_msg);
+        Toolbox::logInFile('assetscleaner', $log_msg . "\n");
 
         foreach ($asset_types as $itemtype) {
             // Validate itemtype
@@ -148,7 +150,9 @@ class AssetsCleaner extends CommonDBTM
             $iterator = $DB->request($query);
             $count = count($iterator);
 
-            $task->log(sprintf("Found %d %s to process", $count, $itemtype::getTypeName($count)));
+            $log_msg = sprintf("Found %d %s to process", $count, $itemtype::getTypeName($count));
+            $task->log($log_msg);
+            Toolbox::logInFile('assetscleaner', $log_msg . "\n");
 
             if ($count == 0) {
                 continue;
@@ -168,31 +172,37 @@ class AssetsCleaner extends CommonDBTM
                 // Move to trash (0 = soft delete, move to trash)
                 if ($item->delete(['id' => $data['id']], 0)) {
                     $processed++;
-                    $task->log(sprintf(
+                    $log_msg = sprintf(
                         "✓ Moved to trash: %s \"%s\" (ID: %d, last update: %s)",
                         $itemtype::getTypeName(1),
                         $data['name'],
                         $data['id'],
                         $data['last_inventory_update'] ?? 'never'
-                    ));
+                    );
+                    $task->log($log_msg);
+                    Toolbox::logInFile('assetscleaner', $log_msg . "\n");
                 } else {
                     $failed++;
-                    $task->log(sprintf(
+                    $log_msg = sprintf(
                         "✗ Failed to move to trash: %s \"%s\" (ID: %d)",
                         $itemtype::getTypeName(1),
                         $data['name'],
                         $data['id']
-                    ));
+                    );
+                    $task->log($log_msg);
+                    Toolbox::logInFile('assetscleaner', $log_msg . "\n");
                 }
             }
 
             $total_processed += $processed;
-            $task->log(sprintf(
+            $log_msg = sprintf(
                 "Summary for %s: %d moved to trash, %d failed",
                 $itemtype::getTypeName(2),
                 $processed,
                 $failed
-            ));
+            );
+            $task->log($log_msg);
+            Toolbox::logInFile('assetscleaner', $log_msg . "\n");
         }
 
         if ($total_processed > 0) {
@@ -234,7 +244,9 @@ class AssetsCleaner extends CommonDBTM
         $total_purged = 0;
         $cutoff_date = date('Y-m-d H:i:s', strtotime("-{$trash_delay} days"));
         
-        $task->log("Purge cutoff date: $cutoff_date (in trash for more than {$trash_delay} days)");
+        $log_msg = "Purge cutoff date: $cutoff_date (in trash for more than {$trash_delay} days)";
+        $task->log($log_msg);
+        Toolbox::logInFile('assetscleaner', $log_msg . "\n");
 
         foreach ($asset_types as $itemtype) {
             // Validate itemtype
@@ -271,7 +283,9 @@ class AssetsCleaner extends CommonDBTM
             $iterator = $DB->request($query);
             $count = count($iterator);
             
-            $task->log(sprintf("Found %d trashed %s to purge", $count, $itemtype::getTypeName($count)));
+            $log_msg = sprintf("Found %d trashed %s to purge", $count, $itemtype::getTypeName($count));
+            $task->log($log_msg);
+            Toolbox::logInFile('assetscleaner', $log_msg . "\n");
 
             if ($count == 0) {
                 continue;
@@ -296,31 +310,37 @@ class AssetsCleaner extends CommonDBTM
                 // Permanently delete (purge) - 1 = force purge
                 if ($item->delete(['id' => $data['id']], 1)) {
                     $purged++;
-                    $task->log(sprintf(
+                    $log_msg = sprintf(
                         "✓ Purged: %s \"%s\" (ID: %d, last update: %s)",
                         $itemtype::getTypeName(1),
                         $data['name'],
                         $data['id'],
                         $data['last_inventory_update'] ?? 'never'
-                    ));
+                    );
+                    $task->log($log_msg);
+                    Toolbox::logInFile('assetscleaner', $log_msg . "\n");
                 } else {
                     $failed++;
-                    $task->log(sprintf(
+                    $log_msg = sprintf(
                         "✗ Failed to purge: %s \"%s\" (ID: %d)",
                         $itemtype::getTypeName(1),
                         $data['name'],
                         $data['id']
-                    ));
+                    );
+                    $task->log($log_msg);
+                    Toolbox::logInFile('assetscleaner', $log_msg . "\n");
                 }
             }
 
             $total_purged += $purged;
-            $task->log(sprintf(
+            $log_msg = sprintf(
                 "Summary for %s: %d purged, %d failed",
                 $itemtype::getTypeName(2),
                 $purged,
                 $failed
-            ));
+            );
+            $task->log($log_msg);
+            Toolbox::logInFile('assetscleaner', $log_msg . "\n");
         }
 
         if ($total_purged > 0) {

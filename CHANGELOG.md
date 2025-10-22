@@ -9,6 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🇫🇷 Version Française
 
+### [1.0.3] - 2025-10-23 - Simplification logique et logging amélioré 🚀
+
+**Améliorations majeures :**
+- 🔄 **REFONTE** : Simplification complète de la logique des tâches cron
+  - Suppression de la dépendance au statut "Décommissionné (Auto)"
+  - Logique simplifiée en 2 étapes : mise en corbeille puis purge
+  - Plus besoin de créer un statut spécifique !
+- 📝 **LOGS** : Amélioration significative du système de logs
+  - Tous les logs sont maintenant écrits dans `files/_log/assetscleaner.log`
+  - Logs détaillés avec noms d'actifs, IDs et dates de dernière mise à jour
+  - Messages de résumé par type d'actif (succès/échecs)
+- 🐛 **FIX** : Correction des requêtes SQL
+  - Suppression de la condition `states_id > 0` qui excluait tous les actifs
+  - Suppression de la clause OR complexe sur `last_inventory_update`
+  - Requêtes SQL simplifiées et plus performantes
+- 🧹 **CLEANUP** : Suppression du code obsolète
+  - Méthode `getOutOfOrderStateId()` supprimée
+  - Configuration simplifiée (suppression des champs first_action/second_action)
+  - Interface utilisateur épurée
+
+**Documentation :**
+- 📚 README mis à jour avec les nouveaux workflows
+- 🔧 Script de diagnostic SQL ajouté (`tools/debug_sql_queries.sql`)
+- 🌍 Traductions mises à jour
+- 📦 Compilateur .mo en PHP pur (plus de dépendance à msgfmt)
+
+**⚠️ Migration depuis v1.0.2** :
+Aucune action requise ! Le plugin fonctionne immédiatement sans configuration de statut.
+
 ### [1.0.2] - 2025-10-23 - Corrections contexte et nomenclature 🔧
 
 **Corrections :**

@@ -7,7 +7,7 @@
 [![GLPI Version](https://img.shields.io/badge/GLPI-%E2%89%A5%2011.0.0-blue)](https://glpi-project.org/)
 [![PHP Version](https://img.shields.io/badge/PHP-%E2%89%A5%208.2-purple)](https://www.php.net/)
 [![License](https://img.shields.io/badge/License-GPLv2-green)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-1.0.0-orange)](https://github.com/pluginsGLPI/assetscleaner/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.3-orange)](https://github.com/SpyKeeR/assetscleaner/releases)
 
 </div>
 
@@ -18,11 +18,12 @@
 **Assets Cleaner** nettoie automatiquement les actifs obsolètes (imprimantes, équipements réseau, téléphones IP) qui ne sont plus détectés par les outils d'inventaire.
 
 ### ✨ Fonctionnalités principales
-- 🔄 **Nettoyage en deux étapes** : Changement de statut + mise en corbeille, puis purge définitive
-- ⚙️ **Configuration flexible** : Délais personnalisables (défaut: 30j + 60j)
+- 🔄 **Nettoyage en deux étapes** : Mise en corbeille, puis purge définitive
+- ⚙️ **Configuration flexible** : Délais personnalisables (défaut: 30j inactivité + 60j corbeille)
 - 🎯 **Types d'actifs** : Imprimantes, téléphones IP, équipements réseau
 - 🧹 **Suppression complète** : Éléments liés (ports, contrats, documents) optionnelle
 - 📊 **Actions automatiques** : 2 tâches cron intégrées
+- 📝 **Logs détaillés** : Trace complète des opérations dans files/_log/assetscleaner.log
 - 🌍 **Traductions** : Interface française complète
 
 ### 🚀 Installation rapide
@@ -32,7 +33,7 @@ git clone https://github.com/SpyKeeR/assetscleaner.git assetscleaner
 ```
 Puis : **Configuration > Plugins > Installer > Activer**
 
-**💡 Important** : Créez l'état "Hors Parc (Auto)" dans Configuration > Intitulés > État
+**💡 Logs** : Les actions du plugin sont enregistrées dans `files/_log/assetscleaner.log`
 
 [📖 Documentation complète ci-dessous](#-about) • [🇬🇧 English version below](#-about)
 
@@ -74,15 +75,15 @@ Without maintenance, your GLPI database accumulates **ghost assets** that clutte
 
 ### 🔄 Two-Stage Automated Cleanup
 
-#### Stage 1: Identification & Isolation
+#### Stage 1: Move to Trash
 After **X days** without inventory update, the plugin automatically:
-- 📍 Changes asset status to "Out of Service (Auto)"
-- 🗑️ Moves asset to trash
+- 🗑️ Moves asset to trash (soft delete)
 - 📝 Logs all actions for audit
+- ⏸️ Asset remains recoverable from trash
 
 #### Stage 2: Permanent Deletion (Optional)
 After **Y additional days** in trash, the plugin:
-- 💥 Permanently deletes the asset
+- 💥 Permanently deletes the asset (hard delete)
 - 🧹 Removes related items (network ports, financial data, associations)
 - 📊 Maintains database integrity
 
@@ -135,12 +136,9 @@ git clone https://github.com/SpyKeeR/assetscleaner.git assetscleaner
 
 ### Post-Installation
 
-Create the "Out of Service (Auto)" state:
-1. Go to **Setup > Dropdowns > Status**
-2. Add new status: **"Hors Parc (Auto)"** or **"Out of Service (Auto)"**
-3. Save
+The plugin is ready to use immediately. No special status configuration needed!
 
-> 💡 **Tip:** The plugin will fallback to existing "out of service" or "hors service" states if the specific one doesn't exist.
+> � **Logs:** All plugin actions are recorded in `files/_log/assetscleaner.log` for auditing and troubleshooting.
 
 ---
 
@@ -211,17 +209,13 @@ WHERE last_inventory_update < (NOW() - configured_delay)
 
 **When an asset is detected as obsolete:**
 
-1. 🔍 **Status Change**
-   - Searches for state "Hors Parc (Auto)" (priority)
-   - Fallback to "hors service" or "out of order"
-   - Updates `states_id` field
-
-2. 🗑️ **Move to Trash**
+1. �️ **Move to Trash (Soft Delete)**
    - Sets `is_deleted = 1`
-   - Keeps asset data intact
-   - Asset disappears from normal views
+   - Keeps all asset data intact
+   - Asset disappears from normal views but remains in trash
+   - Can be restored manually if needed
 
-> ⚡ **Both actions happen simultaneously** to ensure proper asset isolation!
+> 📝 Each action is logged in `files/_log/assetscleaner.log` with asset name, ID, and last update date.
 
 ### Stage 2: PurgeOldTrash Task (Optional)
 
@@ -241,8 +235,24 @@ WHERE last_inventory_update < (NOW() - configured_delay)
 
 | Action | Database Operations | Reversible? |
 |--------|---------------------|-------------|
-| **Stage 1** | UPDATE (status + is_deleted) | ✅ Yes (restore from trash) |
+| **Stage 1** | UPDATE (is_deleted = 1) | ✅ Yes (restore from trash) |
 | **Stage 2** | DELETE (permanent) | ❌ No (backup required) |
+
+### Logging & Monitoring
+
+All plugin operations are logged in **`files/_log/assetscleaner.log`**:
+
+```log
+[2025-10-23 10:00:00] Cutoff date for inactive assets: 2025-09-23 10:00:00 (older than 30 days)
+[2025-10-23 10:00:00] Found 12 Printers to process
+[2025-10-23 10:00:00] ✓ Moved to trash: Printer "HP-Office-201" (ID: 456, last update: 2025-08-15 14:30:00)
+[2025-10-23 10:00:00] Summary for Printers: 12 moved to trash, 0 failed
+```
+
+**View logs in PowerShell:**
+```powershell
+Get-Content F:\GLPI\files\_log\assetscleaner.log -Tail 50
+```
 
 ---
 

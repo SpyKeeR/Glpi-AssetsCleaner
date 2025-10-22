@@ -35,7 +35,7 @@ use GlpiPlugin\Assetscleaner\ProfileAssetsCleaner;
 
 use function Safe\define;
 
-define('PLUGIN_ASSETSCLEANER_VERSION', '1.0.2');
+define('PLUGIN_ASSETSCLEANER_VERSION', '1.0.3');
 
 // Minimal GLPI version, inclusive
 define('PLUGIN_ASSETSCLEANER_MIN_GLPI', '11.0.0');

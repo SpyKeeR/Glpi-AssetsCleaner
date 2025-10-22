@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Assets Cleaner 1.0.0\n"
+"Project-Id-Version: Assets Cleaner 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-22 10:00+0100\n"
-"PO-Revision-Date: 2025-10-22 10:00+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2025-10-23 10:00+0100\n"
+"PO-Revision-Date: 2025-10-23 10:00+0100\n"
+"Last-Translator: SpyKeeR\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
@@ -40,28 +40,16 @@ msgid "Enable automatic cleaning"
 msgstr "Activer le nettoyage automatique"
 
 #: src/ConfigAssetsCleaner.php:169
-msgid "Days before marking as inactive"
-msgstr "Jours avant marquage comme inactif"
+msgid "Days before moving to trash"
+msgstr "Jours avant mise en corbeille"
 
 #: src/ConfigAssetsCleaner.php:175
-msgid "Number of days without inventory update before first action (only applies to automatically inventoried assets)"
-msgstr "Nombre de jours sans mise à jour d'inventaire avant la première action (s'applique uniquement aux actifs inventoriés automatiquement)"
-
-#: src/ConfigAssetsCleaner.php:181
-msgid "First action"
-msgstr "Première action"
-
-#: src/ConfigAssetsCleaner.php:186
-msgid "Set as Decommissioned"
-msgstr "Marquer comme Décommissionné"
-
-#: src/ConfigAssetsCleaner.php:189
-msgid "Move to Trash"
-msgstr "Déplacer à la corbeille"
+msgid "Number of days without inventory update before moving to trash (only applies to automatically inventoried assets)"
+msgstr "Nombre de jours sans mise à jour d'inventaire avant mise en corbeille (s'applique uniquement aux actifs inventoriés automatiquement)"
 
 #: src/ConfigAssetsCleaner.php:197
-msgid "Enable second action"
-msgstr "Activer la seconde action"
+msgid "Enable permanent deletion (purge)"
+msgstr "Activer la suppression définitive (purge)"
 
 #: src/ConfigAssetsCleaner.php:208
 msgid "Days in trash before purging"
@@ -121,45 +109,9 @@ msgstr "Aucun type d'actif configuré"
 msgid "Invalid itemtype: %s"
 msgstr "Type d'élément invalide : %s"
 
-#: src/AssetsCleaner.php:150
-msgid "No %s to process"
-msgstr "Aucun %s à traiter"
-
-#: src/AssetsCleaner.php:177
-msgid "Set %s \"%s\" (ID: %d) as decommissioned and moved to trash"
-msgstr "%s \"%s\" (ID: %d) marqué décommissionné et déplacé à la corbeille"
-
-#: src/AssetsCleaner.php:185
-msgid "Set %s \"%s\" (ID: %d) as decommissioned (trash failed)"
-msgstr "%s \"%s\" (ID: %d) marqué décommissionné (échec mise en corbeille)"
-
-#: src/AssetsCleaner.php:193
-msgid "Moved %s \"%s\" (ID: %d) to trash (state change failed)"
-msgstr "%s \"%s\" (ID: %d) déplacé à la corbeille (échec changement statut)"
-
-#: src/AssetsCleaner.php:200
-msgid "Decommissioned state not found, skipping assets"
-msgstr "État décommissionné non trouvé, actifs ignorés"
-
-#: src/AssetsCleaner.php:207
-msgid "Processed %d %s"
-msgstr "%d %s traité(s)"
-
 #: src/AssetsCleaner.php:236
-msgid "Second action is disabled"
-msgstr "La seconde action est désactivée"
-
-#: src/AssetsCleaner.php:280
-msgid "No trashed %s to purge"
-msgstr "Aucun %s en corbeille à purger"
-
-#: src/AssetsCleaner.php:300
-msgid "Purged %s \"%s\" (ID: %d)"
-msgstr "%s \"%s\" (ID: %d) purgé"
-
-#: src/AssetsCleaner.php:310
-msgid "Purged %d %s"
-msgstr "%d %s purgé(s)"
+msgid "Permanent deletion (purge) is disabled"
+msgstr "La suppression définitive (purge) est désactivée"
 
 #: src/AssetsCleaner.php:389
 msgid "  Deleted %d network ports"
