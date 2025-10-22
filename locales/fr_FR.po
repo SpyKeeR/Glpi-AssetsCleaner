@@ -36,16 +36,16 @@ msgid "Days before marking as inactive"
 msgstr "Jours avant marquage comme inactif"
 
 #: src/ConfigAssetsCleaner.php:175
-msgid "Number of days without inventory update before first action"
-msgstr "Nombre de jours sans mise à jour d'inventaire avant la première action"
+msgid "Number of days without inventory update before first action (only applies to automatically inventoried assets)"
+msgstr "Nombre de jours sans mise à jour d'inventaire avant la première action (s'applique uniquement aux actifs inventoriés automatiquement)"
 
 #: src/ConfigAssetsCleaner.php:181
 msgid "First action"
 msgstr "Première action"
 
 #: src/ConfigAssetsCleaner.php:186
-msgid "Set as Out of Order"
-msgstr "Marquer comme Hors Service"
+msgid "Set as Decommissioned"
+msgstr "Marquer comme Décommissionné"
 
 #: src/ConfigAssetsCleaner.php:189
 msgid "Move to Trash"
@@ -118,20 +118,20 @@ msgid "No %s to process"
 msgstr "Aucun %s à traiter"
 
 #: src/AssetsCleaner.php:177
-msgid "Set %s \"%s\" (ID: %d) as out of order and moved to trash"
-msgstr "%s \"%s\" (ID: %d) marqué hors parc et déplacé à la corbeille"
+msgid "Set %s \"%s\" (ID: %d) as decommissioned and moved to trash"
+msgstr "%s \"%s\" (ID: %d) marqué décommissionné et déplacé à la corbeille"
 
 #: src/AssetsCleaner.php:185
-msgid "Set %s \"%s\" (ID: %d) as out of order (trash failed)"
-msgstr "%s \"%s\" (ID: %d) marqué hors parc (échec mise en corbeille)"
+msgid "Set %s \"%s\" (ID: %d) as decommissioned (trash failed)"
+msgstr "%s \"%s\" (ID: %d) marqué décommissionné (échec mise en corbeille)"
 
 #: src/AssetsCleaner.php:193
 msgid "Moved %s \"%s\" (ID: %d) to trash (state change failed)"
 msgstr "%s \"%s\" (ID: %d) déplacé à la corbeille (échec changement statut)"
 
 #: src/AssetsCleaner.php:200
-msgid "Out of order state not found, skipping assets"
-msgstr "État hors parc non trouvé, actifs ignorés"
+msgid "Decommissioned state not found, skipping assets"
+msgstr "État décommissionné non trouvé, actifs ignorés"
 
 #: src/AssetsCleaner.php:207
 msgid "Processed %d %s"

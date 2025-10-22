@@ -22,9 +22,9 @@
  * You should have received a copy of the GNU General Public License
  * along with AssetsCleaner. If not, see <http://www.gnu.org/licenses/>.
  * -------------------------------------------------------------------------
- * @copyright Copyright (C) 2025 by AssetsCleaner plugin team.
+ * @copyright Copyright (C) 2025 by SpyKeeR.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
- * @link      https://github.com/pluginsGLPI/assetscleaner
+ * @link      https://github.com/SpyKeeR/AssetsCleaner
  * -------------------------------------------------------------------------
  */
 
@@ -88,9 +88,9 @@ function plugin_version_assetscleaner()
     return [
         'name'         => __('Assets Cleaner', 'assetscleaner'),
         'version'      => PLUGIN_ASSETSCLEANER_VERSION,
-        'author'       => 'AssetsCleaner plugin team',
+        'author'       => 'SpyKeeR',
         'license'      => 'GPLv2+',
-        'homepage'     => 'https://github.com/pluginsGLPI/assetscleaner',
+        'homepage'     => 'https://github.com/SpyKeeR/AssetsCleaner',
         'requirements' => [
             'glpi' => [
                 'min' => PLUGIN_ASSETSCLEANER_MIN_GLPI,

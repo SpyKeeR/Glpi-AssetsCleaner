@@ -132,6 +132,7 @@ class AssetsCleaner extends CommonDBTM
                 'WHERE'  => [
                     'is_deleted'  => 0,
                     'is_template' => 0,
+                    'is_dynamic'  => 1, // Only assets managed by inventory
                     'OR' => [
                         ['last_inventory_update' => ['<', $cutoff_date]],
                         ['last_inventory_update' => null],
@@ -158,11 +159,11 @@ class AssetsCleaner extends CommonDBTM
                 $item = new $itemtype();
                 $item->getFromDB($data['id']);
 
-                // Get the "Hors Parc (Auto)" state ID
+                // Get the "Décommissionné (Auto)" state ID
                 $state_id = self::getOutOfOrderStateId();
                 
                 if ($state_id > 0) {
-                    // First, update the state to "Hors Parc (Auto)"
+                    // First, update the state to "Décommissionné (Auto)"
                     $update_success = $item->update([
                         'id' => $data['id'],
                         'states_id' => $state_id,
@@ -174,7 +175,7 @@ class AssetsCleaner extends CommonDBTM
                     if ($update_success && $trash_success) {
                         $processed++;
                         $task->log(sprintf(
-                            __('Set %s "%s" (ID: %d) as out of order and moved to trash', 'assetscleaner'),
+                            __('Set %s "%s" (ID: %d) as decommissioned and moved to trash', 'assetscleaner'),
                             $itemtype::getTypeName(1),
                             $data['name'],
                             $data['id']
@@ -182,7 +183,7 @@ class AssetsCleaner extends CommonDBTM
                     } elseif ($update_success) {
                         $processed++;
                         $task->log(sprintf(
-                            __('Set %s "%s" (ID: %d) as out of order (trash failed)', 'assetscleaner'),
+                            __('Set %s "%s" (ID: %d) as decommissioned (trash failed)', 'assetscleaner'),
                             $itemtype::getTypeName(1),
                             $data['name'],
                             $data['id']
@@ -197,7 +198,7 @@ class AssetsCleaner extends CommonDBTM
                         ));
                     }
                 } else {
-                    $task->log(__('Out of order state not found, skipping assets', 'assetscleaner'), true);
+                    $task->log(__('Decommissioned state not found, skipping assets', 'assetscleaner'), true);
                     break; // Stop processing this itemtype if state not found
                 }
             }
@@ -268,6 +269,7 @@ class AssetsCleaner extends CommonDBTM
                 'WHERE'  => [
                     'is_deleted'  => 1,
                     'is_template' => 0,
+                    'is_dynamic'  => 1, // Only assets managed by inventory
                     'date_mod'    => ['<', $cutoff_date],
                 ],
             ];
@@ -330,13 +332,14 @@ class AssetsCleaner extends CommonDBTM
     {
         global $DB;
 
-        // Try to find a state with completename containing "Hors Parc (Auto)" first, then others
+        // Try to find a state with completename containing "Décommissionné (Auto)" first, then others
         $iterator = $DB->request([
             'SELECT' => ['id'],
             'FROM'   => 'glpi_states',
             'WHERE'  => [
                 'OR' => [
-                    ['completename' => ['LIKE', '%Hors Parc (Auto)%']],
+                    ['completename' => ['LIKE', '%Décommissionné (Auto)%']],
+                    ['completename' => ['LIKE', '%décommissionné%']],
                     ['completename' => ['LIKE', '%hors%service%']],
                     ['completename' => ['LIKE', '%out%order%']],
                 ],

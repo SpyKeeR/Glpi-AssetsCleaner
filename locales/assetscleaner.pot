@@ -36,7 +36,7 @@ msgid "Days before marking as inactive"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:175
-msgid "Number of days without inventory update before first action"
+msgid "Number of days without inventory update before first action (only applies to automatically inventoried assets)"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:181
@@ -44,7 +44,7 @@ msgid "First action"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:186
-msgid "Set as Out of Order"
+msgid "Set as Decommissioned"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:189
@@ -118,11 +118,11 @@ msgid "No %s to process"
 msgstr ""
 
 #: src/AssetsCleaner.php:177
-msgid "Set %s \"%s\" (ID: %d) as out of order and moved to trash"
+msgid "Set %s \"%s\" (ID: %d) as decommissioned and moved to trash"
 msgstr ""
 
 #: src/AssetsCleaner.php:185
-msgid "Set %s \"%s\" (ID: %d) as out of order (trash failed)"
+msgid "Set %s \"%s\" (ID: %d) as decommissioned (trash failed)"
 msgstr ""
 
 #: src/AssetsCleaner.php:193
@@ -130,7 +130,7 @@ msgid "Moved %s \"%s\" (ID: %d) to trash (state change failed)"
 msgstr ""
 
 #: src/AssetsCleaner.php:200
-msgid "Out of order state not found, skipping assets"
+msgid "Decommissioned state not found, skipping assets"
 msgstr ""
 
 #: src/AssetsCleaner.php:207

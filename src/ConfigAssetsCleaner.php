@@ -172,7 +172,7 @@ class ConfigAssetsCleaner extends CommonGLPI
              . $config['inactive_delay_days'] . "' min='1' max='365'>";
         echo "</td>";
         echo "<td colspan='2'>";
-        echo "<i>" . __('Number of days without inventory update before first action', 'assetscleaner') . "</i>";
+        echo "<i>" . __('Number of days without inventory update before first action (only applies to automatically inventoried assets)', 'assetscleaner') . "</i>";
         echo "</td>";
         echo "</tr>";
 
@@ -183,7 +183,7 @@ class ConfigAssetsCleaner extends CommonGLPI
         echo "<select name='first_action'>";
         echo "<option value='out_of_order' " 
              . ($config['first_action'] == 'out_of_order' ? 'selected' : '') . ">"
-             . __('Set as Out of Order', 'assetscleaner') . "</option>";
+             . __('Set as Decommissioned', 'assetscleaner') . "</option>";
         echo "<option value='trash' " 
              . ($config['first_action'] == 'trash' ? 'selected' : '') . ">"
              . __('Move to Trash', 'assetscleaner') . "</option>";
