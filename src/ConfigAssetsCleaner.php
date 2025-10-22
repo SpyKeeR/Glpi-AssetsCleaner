@@ -146,6 +146,7 @@ class ConfigAssetsCleaner extends CommonGLPI
 
         echo "<div class='center'>";
         echo "<form name='form' method='post' action='" . $CFG_GLPI['root_doc'] . "/plugins/assetscleaner/front/config.php'>";
+        echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
         
         echo "<table class='tab_cadre_fixe'>";
         
@@ -266,9 +267,22 @@ class ConfigAssetsCleaner extends CommonGLPI
     {
         $values = [];
         
+        // Validate required fields
+        if (!isset($input['inactive_delay_days']) || !is_numeric($input['inactive_delay_days'])) {
+            return false;
+        }
+        
+        if (!isset($input['trash_delay_days']) || !is_numeric($input['trash_delay_days'])) {
+            return false;
+        }
+        
+        if (!isset($input['first_action']) || !in_array($input['first_action'], ['out_of_order', 'trash'])) {
+            return false;
+        }
+        
         $values['enabled'] = isset($input['enabled']) ? (int)$input['enabled'] : 0;
-        $values['inactive_delay_days'] = (int)$input['inactive_delay_days'];
-        $values['trash_delay_days'] = (int)$input['trash_delay_days'];
+        $values['inactive_delay_days'] = max(1, (int)$input['inactive_delay_days']);
+        $values['trash_delay_days'] = max(1, (int)$input['trash_delay_days']);
         $values['first_action'] = $input['first_action'];
         $values['second_action_enabled'] = isset($input['second_action_enabled']) ? (int)$input['second_action_enabled'] : 0;
         $values['second_action'] = 'purge';

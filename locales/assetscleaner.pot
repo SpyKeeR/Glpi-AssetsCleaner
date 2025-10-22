@@ -16,6 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/ConfigAssetsCleaner.php:135
+msgid "Are you sure you want to save the configuration?"
+msgstr ""
+
+#: front/config.php:45
+msgid "Configuration saved successfully"
+msgstr ""
+
+#: front/config.php:50
+msgid "Error saving configuration"
+msgstr ""
+
 #: src/AssetsCleaner.php:51
 #: src/AssetsCleaner.php:61
 #: src/ConfigAssetsCleaner.php:48

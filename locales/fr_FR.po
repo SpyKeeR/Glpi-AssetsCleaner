@@ -16,6 +16,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: src/ConfigAssetsCleaner.php:135
+msgid "Are you sure you want to save the configuration?"
+msgstr "Êtes-vous sûr de vouloir sauvegarder la configuration ?"
+
+#: front/config.php:45
+msgid "Configuration saved successfully"
+msgstr "Configuration sauvegardée avec succès"
+
+#: front/config.php:50
+msgid "Error saving configuration"
+msgstr "Erreur lors de la sauvegarde de la configuration"
+
 #: src/AssetsCleaner.php:51
 #: src/AssetsCleaner.php:61
 #: src/ConfigAssetsCleaner.php:48

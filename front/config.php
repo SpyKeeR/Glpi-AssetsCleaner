@@ -41,6 +41,8 @@ Session::checkRight('config', UPDATE);
 
 // Process form submission
 if (isset($_POST['update_config'])) {
+    Session::checkCSRF($_POST);
+    
     if (ConfigAssetsCleaner::saveConfig($_POST)) {
         Session::addMessageAfterRedirect(
             __('Configuration saved successfully', 'assetscleaner'),
