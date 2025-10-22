@@ -146,7 +146,6 @@ class ConfigAssetsCleaner extends CommonGLPI
 
         echo "<div class='center'>";
         echo "<form name='form' method='post' action='" . $CFG_GLPI['root_doc'] . "/plugins/assetscleaner/front/config.php'>";
-        echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
         
         echo "<table class='tab_cadre_fixe'>";
         
