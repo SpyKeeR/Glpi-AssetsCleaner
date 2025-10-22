@@ -28,7 +28,7 @@
 ### 🚀 Installation rapide
 ```bash
 cd /path/to/glpi/plugins
-git clone https://github.com/SpyKeeR/glpi-assetscleaner.git assetscleaner
+git clone https://github.com/SpyKeeR/assetscleaner.git assetscleaner
 ```
 Puis : **Configuration > Plugins > Installer > Activer**
 
@@ -118,12 +118,12 @@ After **Y additional days** in trash, the plugin:
 cd /path/to/glpi/plugins
 
 # Clone the repository
-git clone https://github.com/SpyKeeR/glpi-assetscleaner.git assetscleaner
+git clone https://github.com/SpyKeeR/assetscleaner.git assetscleaner
 
 # Or download and extract manually
-# wget https://github.com/SpyKeeR/glpi-assetscleaner/archive/refs/heads/main.zip
+# wget https://github.com/SpyKeeR/assetscleaner/archive/refs/heads/main.zip
 # unzip main.zip
-# mv glpi-assetscleaner-main assetscleaner
+# mv assetscleaner-main assetscleaner
 ```
 
 ### Activation
@@ -425,8 +425,8 @@ the Free Software Foundation; either version 2 of the License, or
 
 ## 📞 Support
 
-- 🐛 **Bug Reports:** [Open an issue](https://github.com/SpyKeeR/glpi-assetscleaner/issues)
-- 💬 **Questions:** [Discussions](https://github.com/SpyKeeR/glpi-assetscleaner/discussions)
+- 🐛 **Bug Reports:** [Open an issue](https://github.com/SpyKeeR/assetscleaner/issues)
+- 💬 **Questions:** [Discussions](https://github.com/SpyKeeR/assetscleaner/discussions)
 - 📧 **Contact:** Your contact info here
 
 ---

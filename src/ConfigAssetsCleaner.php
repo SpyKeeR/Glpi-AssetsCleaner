@@ -24,7 +24,7 @@
  * -------------------------------------------------------------------------
  * @copyright Copyright (C) 2025 by SpyKeeR.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
- * @link      https://github.com/SpyKeeR/Glpi-AssetsCleaner
+ * @link      https://github.com/SpyKeeR/assetscleaner
  * -------------------------------------------------------------------------
  */
 
@@ -85,7 +85,7 @@ class ConfigAssetsCleaner extends CommonGLPI
      */
     public static function getConfigValue($key)
     {
-        $config = Config::getConfigurationValues('plugin:assetscleaner');
+        $config = Config::getConfigurationValues('assetscleaner');
         $defaults = self::getDefaults();
         
         if (isset($config[$key])) {
@@ -113,7 +113,7 @@ class ConfigAssetsCleaner extends CommonGLPI
             $value = json_encode($value);
         }
         
-        return Config::setConfigurationValues('plugin:assetscleaner', [$key => $value]);
+        return Config::setConfigurationValues('assetscleaner', [$key => $value]);
     }
 
     /**
@@ -129,7 +129,7 @@ class ConfigAssetsCleaner extends CommonGLPI
             return false;
         }
 
-        $config = Config::getConfigurationValues('plugin:assetscleaner');
+        $config = Config::getConfigurationValues('assetscleaner');
         $defaults = self::getDefaults();
         
         // Merge with defaults
@@ -283,6 +283,14 @@ class ConfigAssetsCleaner extends CommonGLPI
         }
         
         // Save all configuration values at once
-        return Config::setConfigurationValues('plugin:assetscleaner', $values);
+        $result = Config::setConfigurationValues('assetscleaner', $values);
+        
+        // GLPI 11 returns true on success, but some versions might return differently
+        // Check if values were actually saved
+        if ($result !== false) {
+            return true;
+        }
+        
+        return false;
     }
 }

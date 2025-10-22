@@ -19,7 +19,7 @@ Tous les problèmes identifiés ont été corrigés. Le plugin devrait maintenan
 ```php
 // ❌ ANCIEN CODE (INCORRECT)
 foreach ($values as $key => $value) {
-    $result = Config::setConfigurationValues('plugin:assetscleaner', [$key => $value]);
+    $result = Config::setConfigurationValues('assetscleaner', [$key => $value]);
     if (!$result) {
         return false;
     }
@@ -31,7 +31,7 @@ Le problème : `Config::setConfigurationValues()` doit être appelé UNE SEULE f
 **Solution appliquée** :
 ```php
 // ✅ NOUVEAU CODE (CORRECT)
-return Config::setConfigurationValues('plugin:assetscleaner', $values);
+return Config::setConfigurationValues('assetscleaner', $values);
 ```
 
 **Fichier modifié** : `src/ConfigAssetsCleaner.php` (ligne ~283)
@@ -66,10 +66,11 @@ return Config::setConfigurationValues('plugin:assetscleaner', $values);
 |---------|-----------|---------|
 | **Dossier plugin** | Minuscules | `assetscleaner` |
 | **Namespace PHP** | PascalCase | `GlpiPlugin\Assetscleaner\` |
-| **Package Composer** | lowercase/kebab-case | `spykeer/glpi-assetscleaner` |
-| **Repository GitHub** | PascalCase | `SpyKeeR/Glpi-AssetsCleaner` |
-| **URL GitHub** | Exacte | `https://github.com/SpyKeeR/Glpi-AssetsCleaner` |
+| **Package Composer** | lowercase | `spykeer/assetscleaner` |
+| **Repository GitHub** | lowercase | `SpyKeeR/assetscleaner` |
+| **URL GitHub** | Exacte | `https://github.com/SpyKeeR/assetscleaner` |
 | **Copyright** | Auteur | SpyKeeR |
+| **Context Config** | lowercase | `assetscleaner` (pas `plugin:`) |
 
 **Fichiers modifiés** :
 - ✅ `src/ConfigAssetsCleaner.php`
@@ -144,7 +145,7 @@ php tools/compile_mo.php
 ```sql
 SELECT context, name, value 
 FROM glpi_configs 
-WHERE context = 'plugin:assetscleaner'
+WHERE context = 'assetscleaner'
 ORDER BY name;
 ```
 

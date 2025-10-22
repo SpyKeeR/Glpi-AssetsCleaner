@@ -1,8 +1,8 @@
-# 🚀 Guide de mise à jour Git - v1.0.1
+# 🚀 Guide de mise à jour Git - v1.0.2
 
 ## Statut actuel
 
-Vous avez maintenant **13 fichiers modifiés** et **3 nouveaux fichiers** prêts à être commités.
+Vous avez maintenant des modifications importantes prêtes à être commitées.
 
 ---
 

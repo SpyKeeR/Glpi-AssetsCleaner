@@ -1,9 +1,9 @@
 {
-    "name": "spykeer/glpi-assetscleaner",
+    "name": "spykeer/assetscleaner",
     "description": "GLPI plugin to automatically clean old assets not updated by inventory",
     "type": "glpi-plugin",
     "keywords": ["glpi", "plugin", "assets", "cleaner", "inventory"],
-    "homepage": "https://github.com/SpyKeeR/Glpi-AssetsCleaner",
+    "homepage": "https://github.com/SpyKeeR/assetscleaner",
     "license": "GPL-2.0-or-later",
     "authors": [
         {

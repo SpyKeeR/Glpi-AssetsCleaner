@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🇫🇷 Version Française
 
+### [1.0.2] - 2025-10-23 - Corrections contexte et nomenclature 🔧
+
+**Corrections :**
+- 🐛 **FIX** : Correction du contexte de configuration
+  - Changement de `plugin:assetscleaner` vers `assetscleaner` (convention GLPI standard)
+  - Amélioration de la gestion du retour de `saveConfig()` pour éviter les faux négatifs
+- 🔗 **IMPORTANT** : Mise à jour de toutes les URLs et noms
+  - Repository GitHub : `SpyKeeR/assetscleaner` (minuscules obligatoires)
+  - Package Composer : `spykeer/assetscleaner`
+  - Toutes les URLs mises à jour en conséquence
+- 📝 Mise à jour de la documentation complète
+
+**⚠️ Migration depuis v1.0.1** :
+Si vous avez installé v1.0.1, la configuration utilisait `plugin:assetscleaner`. Après la mise à jour :
+1. Allez dans Configuration > Général > Assets Cleaner
+2. Reconfigurez vos paramètres (l'ancien contexte ne sera pas migré automatiquement)
+3. Vos anciennes valeurs peuvent être supprimées manuellement de la table `glpi_configs`
+
 ### [1.0.1] - 2025-10-22 - Correctifs critiques 🔧
 
 **Corrections :**
@@ -55,6 +73,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## 🇬🇧 English Version
+
+### [1.0.2] - 2025-10-23 - Context and naming fixes 🔧
+
+#### Fixed
+- 🐛 **FIX**: Configuration context correction
+  - Changed from `plugin:assetscleaner` to `assetscleaner` (GLPI standard convention)
+  - Improved `saveConfig()` return handling to avoid false negatives
+- 🔗 **IMPORTANT**: All URLs and names updated
+  - GitHub repository: `SpyKeeR/assetscleaner` (lowercase required)
+  - Composer package: `spykeer/assetscleaner`
+  - All URLs updated accordingly
+- 📝 Complete documentation update
+
+**⚠️ Migration from v1.0.1**:
+If you installed v1.0.1, configuration used `plugin:assetscleaner`. After update:
+1. Go to Setup > General > Assets Cleaner tab
+2. Reconfigure your settings (old context won't migrate automatically)
+3. Old values can be manually deleted from `glpi_configs` table
 
 ### [1.0.1] - 2025-10-22 - Critical Fixes 🔧
 

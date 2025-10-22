@@ -24,7 +24,7 @@
  * -------------------------------------------------------------------------
  * @copyright Copyright (C) 2025 by SpyKeeR.
  * @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
- * @link      https://github.com/SpyKeeR/Glpi-AssetsCleaner
+ * @link      https://github.com/SpyKeeR/assetscleaner
  * -------------------------------------------------------------------------
  */
 
@@ -53,7 +53,7 @@ function plugin_assetscleaner_install()
         }
     }
     
-    Config::setConfigurationValues('plugin:assetscleaner', $config_values);
+    Config::setConfigurationValues('assetscleaner', $config_values);
 
     // Register the cron tasks
     CronTask::Register(
@@ -88,7 +88,7 @@ function plugin_assetscleaner_uninstall()
 {
     // Delete configuration
     $config = new Config();
-    $config->deleteConfigurationValues('plugin:assetscleaner');
+    $config->deleteConfigurationValues('assetscleaner');
 
     // Unregister cron tasks
     $cron = new CronTask();

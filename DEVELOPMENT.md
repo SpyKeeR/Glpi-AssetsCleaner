@@ -33,11 +33,11 @@ assetscleaner/
 ```php
 // AVANT (❌ incorrect)
 foreach ($values as $key => $value) {
-    Config::setConfigurationValues('plugin:assetscleaner', [$key => $value]);
+    Config::setConfigurationValues('assetscleaner', [$key => $value]);
 }
 
 // APRÈS (✅ correct)
-Config::setConfigurationValues('plugin:assetscleaner', $values);
+Config::setConfigurationValues('assetscleaner', $values);
 ```
 
 ### 2. Problèmes de token CRLF ❌ → ✅
@@ -51,8 +51,8 @@ Config::setConfigurationValues('plugin:assetscleaner', $values);
 **Solution** :
 - Nom du dossier plugin : `assetscleaner` (minuscules)
 - Namespace PHP : `GlpiPlugin\Assetscleaner\`
-- Composer package : `spykeer/glpi-assetscleaner`
-- URL GitHub : `https://github.com/SpyKeeR/Glpi-AssetsCleaner`
+- Composer package : `spykeer/assetscleaner`
+- URL GitHub : `https://github.com/SpyKeeR/assetscleaner`
 
 ## Compilation des traductions
 
@@ -95,11 +95,11 @@ GLPI peut compiler automatiquement les fichiers .mo au chargement du plugin.
 ## Conventions de nommage GLPI
 
 ### Identifiants de configuration
-Préfixe : `plugin:assetscleaner`
+Contexte : `assetscleaner`
 
 Exemple :
 ```php
-Config::setConfigurationValues('plugin:assetscleaner', [
+Config::setConfigurationValues('assetscleaner', [
     'enabled' => 1,
     'inactive_delay_days' => 30,
 ]);
@@ -127,7 +127,7 @@ Exemples :
 
 ```sql
 SELECT * FROM glpi_configs 
-WHERE context = 'plugin:assetscleaner';
+WHERE context = 'assetscleaner';
 ```
 
 ### Tester les tâches cron
