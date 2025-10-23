@@ -45,7 +45,9 @@ class ConfigAssetsCleaner extends CommonGLPI
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         if ($item->getType() == 'Config') {
-            return __('Assets Cleaner', 'assetscleaner');
+            return [
+                1 => "<i class='ti ti-broom'></i> " . __('Assets cleanup', 'assetscleaner')
+            ];
         }
         return '';
     }
@@ -176,7 +178,7 @@ class ConfigAssetsCleaner extends CommonGLPI
 
         // Enable second action (purge)
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Enable automatic purge', 'assetscleaner') . "</td>";
+        echo "<td>" . __('Enable permanent deletion (purge)', 'assetscleaner') . "</td>";
         echo "<td>";
         echo "<input type='hidden' name='second_action_enabled' value='0'>";
         echo "<input type='checkbox' name='second_action_enabled' value='1' " 

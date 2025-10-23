@@ -59,7 +59,8 @@ function plugin_init_assetscleaner()
 
     // Display a menu entry in Configuration
     if (Session::haveRight('config', UPDATE)) {
-        $PLUGIN_HOOKS['config_page']['assetscleaner'] = 'front/config.php';
+        // Point to main GLPI config page with our plugin tab
+        $PLUGIN_HOOKS['config_page']['assetscleaner'] = 'Config$1';
         $PLUGIN_HOOKS['menu_toadd']['assetscleaner'] = ['config' => AssetsCleaner::class];
     }
 

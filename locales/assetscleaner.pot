@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Assets Cleaner 1.0.0\n"
+"Project-Id-Version: Assets Cleaner 1.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-20 22:30+0100\n"
+"POT-Creation-Date: 2025-10-23 10:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,10 +15,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: src/ConfigAssetsCleaner.php:135
-msgid "Are you sure you want to save the configuration?"
-msgstr ""
 
 #: front/config.php:45
 msgid "Configuration saved successfully"
@@ -34,6 +30,10 @@ msgstr ""
 msgid "Assets Cleaner"
 msgstr ""
 
+#: src/ConfigAssetsCleaner.php:47
+msgid "Assets cleanup"
+msgstr ""
+
 #: src/ConfigAssetsCleaner.php:42
 #: src/ConfigAssetsCleaner.php:153
 msgid "Assets Cleaner Configuration"
@@ -44,27 +44,15 @@ msgid "Enable automatic cleaning"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:169
-msgid "Days before marking as inactive"
+msgid "Days before moving to trash"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:175
-msgid "Number of days without inventory update before first action (only applies to automatically inventoried assets)"
-msgstr ""
-
-#: src/ConfigAssetsCleaner.php:181
-msgid "First action"
-msgstr ""
-
-#: src/ConfigAssetsCleaner.php:186
-msgid "Set as Decommissioned"
-msgstr ""
-
-#: src/ConfigAssetsCleaner.php:189
-msgid "Move to Trash"
+msgid "Number of days without inventory update before moving to trash (only applies to automatically inventoried assets)"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:197
-msgid "Enable second action"
+msgid "Enable permanent deletion (purge)"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:208
@@ -125,44 +113,8 @@ msgstr ""
 msgid "Invalid itemtype: %s"
 msgstr ""
 
-#: src/AssetsCleaner.php:150
-msgid "No %s to process"
-msgstr ""
-
-#: src/AssetsCleaner.php:177
-msgid "Set %s \"%s\" (ID: %d) as decommissioned and moved to trash"
-msgstr ""
-
-#: src/AssetsCleaner.php:185
-msgid "Set %s \"%s\" (ID: %d) as decommissioned (trash failed)"
-msgstr ""
-
-#: src/AssetsCleaner.php:193
-msgid "Moved %s \"%s\" (ID: %d) to trash (state change failed)"
-msgstr ""
-
-#: src/AssetsCleaner.php:200
-msgid "Decommissioned state not found, skipping assets"
-msgstr ""
-
-#: src/AssetsCleaner.php:207
-msgid "Processed %d %s"
-msgstr ""
-
 #: src/AssetsCleaner.php:236
-msgid "Second action is disabled"
-msgstr ""
-
-#: src/AssetsCleaner.php:280
-msgid "No trashed %s to purge"
-msgstr ""
-
-#: src/AssetsCleaner.php:300
-msgid "Purged %s \"%s\" (ID: %d)"
-msgstr ""
-
-#: src/AssetsCleaner.php:310
-msgid "Purged %d %s"
+msgid "Permanent deletion (purge) is disabled"
 msgstr ""
 
 #: src/AssetsCleaner.php:389

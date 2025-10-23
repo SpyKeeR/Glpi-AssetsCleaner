@@ -30,6 +30,10 @@ msgstr "Erreur lors de la sauvegarde de la configuration"
 msgid "Assets Cleaner"
 msgstr "Nettoyeur d'actifs"
 
+#: src/ConfigAssetsCleaner.php:47
+msgid "Assets cleanup"
+msgstr "Nettoyage d'éléments"
+
 #: src/ConfigAssetsCleaner.php:42
 #: src/ConfigAssetsCleaner.php:153
 msgid "Assets Cleaner Configuration"
