@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🇫🇷 Version Française
 
+### [1.0.4] - 2025-10-23 - Restauration automatique depuis la corbeille ♻️ 🚀
+
+**Nouvelle fonctionnalité majeure :**
+- ♻️ **NOUVEAU** : Restauration automatique depuis la corbeille !
+  - Nouvelle tâche cron : `RestoreInventoriedAssets`
+  - Si un actif en corbeille est détecté à nouveau par l'inventaire (dans les 7 jours par défaut), il est automatiquement restauré
+  - Évite les faux positifs lors de pannes réseau temporaires ou maintenances
+  - Entièrement configurable depuis l'interface
+- ⚙️ **CONFIGURATION** : Nouvelles options ajoutées
+  - "Activer la restauration automatique" (activé par défaut)
+  - "Délai de restauration" : nombre de jours pour vérifier les mises à jour d'inventaire récentes (défaut: 7)
+- 📝 **LOGS** : Logs détaillés de restauration
+  - Affiche le nom, ID et date du dernier inventaire pour chaque actif restauré
+  - Logs d'échec de restauration si problème
+- 🎨 **INTERFACE** : Nouvelle section dans la configuration
+  - Section "Restauration automatique depuis la corbeille" avec explication
+  - Icône de l'onglet changée en `ti-recycle` ♻️
+  - Nom de l'onglet : "Nettoyage éléments"
+
+**Scénario d'utilisation :**
+```
+Jour 0  : Imprimante répond à l'inventaire
+Jour 30 : Plus de réponse → Mise en corbeille
+Jour 35 : Imprimante rallumée → Inventaire la détecte
+        → ✅ Restauration automatique !
+```
+
+**Documentation :**
+- 📚 README mis à jour avec le nouveau workflow en 3 étapes
+- 📋 INSTALL.md mis à jour avec la nouvelle configuration
+- 🌍 Toutes les traductions ajoutées (FR et POT)
+
+**⚠️ Migration depuis v1.0.3** :
+- La restauration automatique est **activée par défaut**
+- Aucune action requise, mais vous pouvez la désactiver dans la configuration si nécessaire
+
 ### [1.0.3] - 2025-10-23 - Simplification logique et logging amélioré 🚀
 
 **Améliorations majeures :**
@@ -103,6 +139,42 @@ Si vous avez installé v1.0.1, la configuration utilisait `plugin:assetscleaner`
 
 ## 🇬🇧 English Version
 
+### [1.0.4] - 2025-10-23 - Automatic restoration from trash ♻️ 🚀
+
+#### Added
+- ♻️ **NEW**: Automatic restoration from trash!
+  - New cron task: `RestoreInventoriedAssets`
+  - If a trashed asset is detected again by inventory (within 7 days by default), it's automatically restored
+  - Prevents false positives during temporary network outages or maintenance
+  - Fully configurable from the interface
+- ⚙️ **CONFIGURATION**: New settings added
+  - "Enable automatic restoration" (enabled by default)
+  - "Restore threshold": number of days to check for recent inventory updates (default: 7)
+- 📝 **LOGS**: Detailed restoration logs
+  - Shows name, ID, and last inventory date for each restored asset
+  - Logs restoration failures if issues occur
+- 🎨 **INTERFACE**: New configuration section
+  - "Automatic restoration from trash" section with explanation
+  - Tab icon changed to `ti-recycle` ♻️
+  - Tab name: "Assets cleanup"
+
+#### Use Case
+```
+Day 0:  Printer responds to inventory
+Day 30: No response → Moved to trash
+Day 35: Printer turned back on → Inventory detects it
+        → ✅ Automatically restored!
+```
+
+#### Documentation
+- 📚 README updated with new 3-stage workflow
+- 📋 INSTALL.md updated with new configuration
+- 🌍 All translations added (FR and POT)
+
+**⚠️ Migration from v1.0.3**:
+- Automatic restoration is **enabled by default**
+- No action required, but you can disable it in configuration if needed
+
 ### [1.0.2] - 2025-10-23 - Context and naming fixes 🔧
 
 #### Fixed
@@ -187,6 +259,10 @@ If you installed v1.0.1, configuration used `plugin:assetscleaner`. After update
 
 | Version | Date | GLPI Version | PHP Version |
 |---------|------|--------------|-------------|
+| 1.0.4 | 2025-10-23 | 11.0.x | 8.2+ |
+| 1.0.3 | 2025-10-23 | 11.0.x | 8.2+ |
+| 1.0.2 | 2025-10-23 | 11.0.x | 8.2+ |
+| 1.0.1 | 2025-10-22 | 11.0.x | 8.2+ |
 | 1.0.0 | 2025-10-20 | 11.0.x | 8.2+ |
 
 

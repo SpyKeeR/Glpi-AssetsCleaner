@@ -88,6 +88,26 @@ msgid "Delete cartridges, network ports, etc. when deleting the asset"
 msgstr "Supprimer les cartouches, ports réseau, etc. lors de la suppression de l'actif"
 
 #: src/ConfigAssetsCleaner.php:250
+msgid "Automatic restoration from trash"
+msgstr "Restauration automatique depuis la corbeille"
+
+#: src/ConfigAssetsCleaner.php:255
+msgid "Enable automatic restoration"
+msgstr "Activer la restauration automatique"
+
+#: src/ConfigAssetsCleaner.php:262
+msgid "Automatically restore assets from trash if they are detected by inventory again"
+msgstr "Restaurer automatiquement les actifs de la corbeille s'ils sont détectés à nouveau par l'inventaire"
+
+#: src/ConfigAssetsCleaner.php:268
+msgid "Restore threshold (days)"
+msgstr "Délai de restauration (jours)"
+
+#: src/ConfigAssetsCleaner.php:274
+msgid "Restore assets from trash if they have been updated by inventory in the last X days"
+msgstr "Restaurer les actifs de la corbeille s'ils ont été mis à jour par l'inventaire dans les X derniers jours"
+
+#: src/ConfigAssetsCleaner.php:280
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -99,9 +119,37 @@ msgstr "Nettoyer les anciens actifs non mis à jour par inventaire"
 msgid "Purge old assets from trash"
 msgstr "Purger les anciens actifs de la corbeille"
 
+#: src/AssetsCleaner.php:85
+msgid "Restore assets from trash if recently inventoried"
+msgstr "Restaurer les actifs de la corbeille s'ils ont été inventoriés récemment"
+
 #: src/AssetsCleaner.php:100
 msgid "Assets Cleaner is disabled"
 msgstr "Le nettoyeur d'actifs est désactivé"
+
+#: src/AssetsCleaner.php:455
+msgid "Automatic restoration from trash is disabled"
+msgstr "La restauration automatique depuis la corbeille est désactivée"
+
+#: src/AssetsCleaner.php:475
+msgid "No %s in trash with recent inventory update"
+msgstr "Aucun %s dans la corbeille avec une mise à jour d'inventaire récente"
+
+#: src/AssetsCleaner.php:481
+msgid "Found %d %s in trash with recent inventory update"
+msgstr "%d %s trouvé(s) dans la corbeille avec une mise à jour d'inventaire récente"
+
+#: src/AssetsCleaner.php:494
+msgid "Restored %s \"%s\" (ID: %d) - Last inventory: %s"
+msgstr "%s \"%s\" (ID: %d) restauré - Dernier inventaire : %s"
+
+#: src/AssetsCleaner.php:501
+msgid "Failed to restore %s \"%s\" (ID: %d)"
+msgstr "Échec de la restauration de %s \"%s\" (ID: %d)"
+
+#: src/AssetsCleaner.php:510
+msgid "Restored %d %s from trash"
+msgstr "%d %s restauré(s) de la corbeille"
 
 #: src/AssetsCleaner.php:109
 #: src/AssetsCleaner.php:245

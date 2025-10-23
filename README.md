@@ -73,7 +73,7 @@ Without maintenance, your GLPI database accumulates **ghost assets** that clutte
 
 ## ✨ Features
 
-### 🔄 Two-Stage Automated Cleanup
+### 🔄 Three-Stage Automated Cleanup
 
 #### Stage 1: Move to Trash
 After **X days** without inventory update, the plugin automatically:
@@ -81,8 +81,14 @@ After **X days** without inventory update, the plugin automatically:
 - 📝 Logs all actions for audit
 - ⏸️ Asset remains recoverable from trash
 
-#### Stage 2: Permanent Deletion (Optional)
-After **Y additional days** in trash, the plugin:
+#### Stage 2: Automatic Restoration (New! ✨)
+If an asset in trash is detected by inventory again within **Y days**:
+- ♻️ Automatically restored from trash
+- 🔄 Asset becomes active again
+- 📝 Restoration is logged for tracking
+
+#### Stage 3: Permanent Deletion (Optional)
+After **Z additional days** in trash without inventory update, the plugin:
 - 💥 Permanently deletes the asset (hard delete)
 - 🧹 Removes related items (network ports, financial data, associations)
 - 📊 Maintains database integrity
@@ -95,6 +101,8 @@ After **Y additional days** in trash, the plugin:
 | **Trash Delay** | Days in trash before purge | 60 days |
 | **Asset Types** | Select which types to clean | Printers only |
 | **Related Items** | Also delete ports, contracts, etc. | Enabled |
+| **Auto Restore** | Restore from trash if inventoried | Enabled |
+| **Restore Threshold** | Days to check for recent inventory | 7 days |
 
 ### 🎛️ Supported Asset Types
 
@@ -167,11 +175,12 @@ The plugin registers two automatic tasks. **You must enable them!**
 
 1. Go to **Setup > Automatic actions**
 2. Search for **"AssetsCleaner"**
-3. Enable both tasks:
+3. Enable all three tasks:
 
 | Task | Frequency | Description |
 |------|-----------|-------------|
 | **CleanOldAssets** | Daily | Marks obsolete assets and moves to trash |
+| **RestoreInventoriedAssets** | Daily | Restores assets from trash if recently inventoried |
 | **PurgeOldTrash** | Daily | Permanently deletes old trashed items |
 
 #### CLI Execution (Recommended)
@@ -179,15 +188,17 @@ The plugin registers two automatic tasks. **You must enable them!**
 For better performance, run via command line:
 
 ```bash
-# Run both tasks
+# Run all three tasks
 php bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronCleanOldAssets'
+php bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronRestoreInventoriedAssets'
 php bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronPurgeOldTrash'
 ```
 
 Add to your system crontab:
 ```cron
-# Daily at 2 AM
+# Daily at 2 AM, 2:30 AM, and 3 AM
 0 2 * * * php /path/to/glpi/bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronCleanOldAssets'
+30 2 * * * php /path/to/glpi/bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronRestoreInventoriedAssets'
 0 3 * * * php /path/to/glpi/bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronPurgeOldTrash'
 ```
 
@@ -209,7 +220,7 @@ WHERE last_inventory_update < (NOW() - configured_delay)
 
 **When an asset is detected as obsolete:**
 
-1. �️ **Move to Trash (Soft Delete)**
+1. 🗑️ **Move to Trash (Soft Delete)**
    - Sets `is_deleted = 1`
    - Keeps all asset data intact
    - Asset disappears from normal views but remains in trash
@@ -217,7 +228,27 @@ WHERE last_inventory_update < (NOW() - configured_delay)
 
 > 📝 Each action is logged in `files/_log/assetscleaner.log` with asset name, ID, and last update date.
 
-### Stage 2: PurgeOldTrash Task (Optional)
+### Stage 2: RestoreInventoriedAssets Task (New! ✨)
+
+**When an asset in trash is detected by inventory again:**
+
+1. ♻️ **Automatic Restoration**
+   - Checks assets in trash with `is_deleted = 1` and `is_dynamic = 1`
+   - If `last_inventory_update` is within threshold (default: 7 days)
+   - Sets `is_deleted = 0` to restore the asset
+   - Asset becomes active again in normal views
+
+**Example scenario:**
+```
+Day 0:   Printer responds to inventory
+Day 30:  Printer stops responding → Moved to trash
+Day 35:  Printer is turned back on → Inventory detects it
+         → Plugin automatically restores it from trash! ✅
+```
+
+> 💡 This prevents false positives when assets are temporarily offline for maintenance or network issues.
+
+### Stage 3: PurgeOldTrash Task (Optional)
 
 **When trash retention period expires:**
 
@@ -264,15 +295,19 @@ Get-Content F:\GLPI\files\_log\assetscleaner.log -Tail 50
 
 **Recommended Configuration:**
 ```
-Inactive delay:  30 days
-Trash delay:     60 days
-Asset types:     [✓] Printers
-Related items:   Enabled
+Inactive delay:        30 days
+Trash delay:           60 days
+Asset types:           [✓] Printers
+Related items:         Enabled
+Auto restore:          Enabled
+Restore threshold:     7 days
 ```
 
 **Timeline:**
 - **Day 0**: Printer stops responding to inventory
-- **Day 30**: ⚠️ Status changed to "Out of Service" + moved to trash
+- **Day 30**: ⚠️ Moved to trash (soft delete)
+- **Day 35**: 🔌 Printer turned back on → ♻️ **Automatically restored!**
+- **Alternative:** If printer stays offline...
 - **Day 90**: 💥 Printer permanently deleted with all related data
 
 ### 🌐 Case 2: Network Equipment (Conservative)

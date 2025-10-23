@@ -88,6 +88,26 @@ msgid "Delete cartridges, network ports, etc. when deleting the asset"
 msgstr ""
 
 #: src/ConfigAssetsCleaner.php:250
+msgid "Automatic restoration from trash"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:255
+msgid "Enable automatic restoration"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:262
+msgid "Automatically restore assets from trash if they are detected by inventory again"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:268
+msgid "Restore threshold (days)"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:274
+msgid "Restore assets from trash if they have been updated by inventory in the last X days"
+msgstr ""
+
+#: src/ConfigAssetsCleaner.php:280
 msgid "Save"
 msgstr ""
 
@@ -99,8 +119,36 @@ msgstr ""
 msgid "Purge old assets from trash"
 msgstr ""
 
+#: src/AssetsCleaner.php:85
+msgid "Restore assets from trash if recently inventoried"
+msgstr ""
+
 #: src/AssetsCleaner.php:100
 msgid "Assets Cleaner is disabled"
+msgstr ""
+
+#: src/AssetsCleaner.php:455
+msgid "Automatic restoration from trash is disabled"
+msgstr ""
+
+#: src/AssetsCleaner.php:475
+msgid "No %s in trash with recent inventory update"
+msgstr ""
+
+#: src/AssetsCleaner.php:481
+msgid "Found %d %s in trash with recent inventory update"
+msgstr ""
+
+#: src/AssetsCleaner.php:494
+msgid "Restored %s \"%s\" (ID: %d) - Last inventory: %s"
+msgstr ""
+
+#: src/AssetsCleaner.php:501
+msgid "Failed to restore %s \"%s\" (ID: %d)"
+msgstr ""
+
+#: src/AssetsCleaner.php:510
+msgid "Restored %d %s from trash"
 msgstr ""
 
 #: src/AssetsCleaner.php:109

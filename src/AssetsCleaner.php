@@ -79,6 +79,11 @@ class AssetsCleaner extends CommonDBTM
                 return [
                     'description' => __('Purge old assets from trash', 'assetscleaner'),
                 ];
+            
+            case 'RestoreInventoriedAssets':
+                return [
+                    'description' => __('Restore assets from trash if recently inventoried', 'assetscleaner'),
+                ];
         }
         return [];
     }
@@ -433,6 +438,116 @@ class AssetsCleaner extends CommonDBTM
                 ));
             }
         }
+    }
+
+    /**
+     * Execute the third cron task: Restore assets from trash if recently inventoried
+     * Restore dynamic assets from trash that have been updated by inventory in the last X days
+     *
+     * @param CronTask $task Object of CronTask class for log / stat
+     * @return int >0 : done, <0 : to be run again, 0 : nothing to do
+     */
+    public static function cronRestoreInventoriedAssets($task)
+    {
+        global $DB;
+
+        $auto_restore = ConfigAssetsCleaner::getConfigValue('auto_restore_from_trash');
+        
+        if (!$auto_restore) {
+            $task->log(__('Automatic restoration from trash is disabled', 'assetscleaner'));
+            return 0;
+        }
+
+        $restore_threshold = ConfigAssetsCleaner::getConfigValue('restore_threshold_days');
+        $asset_types = ConfigAssetsCleaner::getConfigValue('asset_types');
+        
+        if (empty($asset_types)) {
+            $task->log(__('No asset types configured', 'assetscleaner'));
+            return 0;
+        }
+
+        $total_restored = 0;
+        $cutoff_date = date('Y-m-d H:i:s', strtotime("-{$restore_threshold} days"));
+        
+        $log_msg = "Looking for assets in trash with inventory update after: $cutoff_date (within {$restore_threshold} days)";
+        $task->log($log_msg);
+
+        foreach ($asset_types as $itemtype) {
+            // Validate itemtype
+            if (!class_exists($itemtype)) {
+                $task->log(sprintf(__('Invalid itemtype: %s', 'assetscleaner'), $itemtype));
+                continue;
+            }
+
+            $item = new $itemtype();
+            $table = $item->getTable();
+
+            // Find assets in trash that have been recently updated by inventory
+            $iterator = $DB->request([
+                'SELECT' => ['id', 'name', 'last_inventory_update'],
+                'FROM'   => $table,
+                'WHERE'  => [
+                    'is_deleted'  => 1,  // In trash
+                    'is_dynamic'  => 1,  // Managed by inventory
+                    ['NOT' => ['last_inventory_update' => null]],
+                    ['last_inventory_update' => ['>', $cutoff_date]],
+                ],
+            ]);
+
+            $count = count($iterator);
+            
+            if ($count == 0) {
+                $task->log(sprintf(
+                    __('No %s in trash with recent inventory update', 'assetscleaner'),
+                    $itemtype
+                ));
+                continue;
+            }
+
+            $task->log(sprintf(
+                __('Found %d %s in trash with recent inventory update', 'assetscleaner'),
+                $count,
+                $itemtype
+            ));
+
+            $restored = 0;
+            foreach ($iterator as $data) {
+                // Restore asset from trash
+                if ($item->restore(['id' => $data['id']])) {
+                    $restored++;
+                    $task->log(sprintf(
+                        __('Restored %s "%s" (ID: %d) - Last inventory: %s', 'assetscleaner'),
+                        $itemtype,
+                        $data['name'],
+                        $data['id'],
+                        $data['last_inventory_update']
+                    ));
+                } else {
+                    $task->log(sprintf(
+                        __('Failed to restore %s "%s" (ID: %d)', 'assetscleaner'),
+                        $itemtype,
+                        $data['name'],
+                        $data['id']
+                    ));
+                }
+            }
+
+            if ($restored > 0) {
+                $task->log(sprintf(
+                    __('Restored %d %s from trash', 'assetscleaner'),
+                    $restored,
+                    $itemtype
+                ));
+                $total_restored += $restored;
+            }
+        }
+
+        if ($total_restored > 0) {
+            $task->addVolume($total_restored);
+            return 1;
+        }
+
+        return 0;
     }
 }
 

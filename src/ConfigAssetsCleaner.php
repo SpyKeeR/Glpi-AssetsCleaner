@@ -69,12 +69,14 @@ class ConfigAssetsCleaner extends CommonGLPI
     public static function getDefaults()
     {
         return [
-            'enabled'                => 0,
-            'inactive_delay_days'    => 30,
-            'trash_delay_days'       => 60,
-            'second_action_enabled'  => 1,
-            'asset_types'            => ['Printer'], // Printer, NetworkEquipment, Phone
-            'delete_related_items'   => 1,
+            'enabled'                  => 0,
+            'inactive_delay_days'      => 30,
+            'trash_delay_days'         => 60,
+            'second_action_enabled'    => 1,
+            'asset_types'              => ['Printer'], // Printer, NetworkEquipment, Phone
+            'delete_related_items'     => 1,
+            'auto_restore_from_trash'  => 1,
+            'restore_threshold_days'   => 7,
         ];
     }
 
@@ -230,6 +232,36 @@ class ConfigAssetsCleaner extends CommonGLPI
         echo "</td>";
         echo "</tr>";
 
+        // Section separator
+        echo "<tr class='tab_bg_2'>";
+        echo "<th colspan='4'>" . __('Automatic restoration from trash', 'assetscleaner') . "</th>";
+        echo "</tr>";
+
+        // Enable auto restore from trash
+        echo "<tr class='tab_bg_1'>";
+        echo "<td>" . __('Enable automatic restoration', 'assetscleaner') . "</td>";
+        echo "<td>";
+        echo "<input type='hidden' name='auto_restore_from_trash' value='0'>";
+        echo "<input type='checkbox' name='auto_restore_from_trash' value='1' " 
+             . ($config['auto_restore_from_trash'] ? 'checked' : '') . ">";
+        echo "</td>";
+        echo "<td colspan='2'>";
+        echo "<i>" . __('Automatically restore assets from trash if they are detected by inventory again', 'assetscleaner') . "</i>";
+        echo "</td>";
+        echo "</tr>";
+
+        // Restore threshold days
+        echo "<tr class='tab_bg_1'>";
+        echo "<td>" . __('Restore threshold (days)', 'assetscleaner') . "</td>";
+        echo "<td>";
+        echo "<input type='number' name='restore_threshold_days' value='" 
+             . $config['restore_threshold_days'] . "' min='1' max='30'>";
+        echo "</td>";
+        echo "<td colspan='2'>";
+        echo "<i>" . __('Restore assets from trash if they have been updated by inventory in the last X days', 'assetscleaner') . "</i>";
+        echo "</td>";
+        echo "</tr>";
+
         echo "<tr class='tab_bg_1'>";
         echo "<td class='center' colspan='4'>";
         echo "<input type='submit' name='update_config' value='" . __('Save') . "' class='btn btn-primary'>";
@@ -257,6 +289,8 @@ class ConfigAssetsCleaner extends CommonGLPI
         $values['trash_delay_days'] = isset($input['trash_delay_days']) ? max(1, (int)$input['trash_delay_days']) : 60;
         $values['second_action_enabled'] = isset($input['second_action_enabled']) ? (int)$input['second_action_enabled'] : 0;
         $values['delete_related_items'] = isset($input['delete_related_items']) ? (int)$input['delete_related_items'] : 0;
+        $values['auto_restore_from_trash'] = isset($input['auto_restore_from_trash']) ? (int)$input['auto_restore_from_trash'] : 0;
+        $values['restore_threshold_days'] = isset($input['restore_threshold_days']) ? max(1, min(30, (int)$input['restore_threshold_days'])) : 7;
         
         // Handle asset types array
         if (isset($input['asset_types']) && is_array($input['asset_types'])) {

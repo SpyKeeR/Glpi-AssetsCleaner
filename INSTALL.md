@@ -53,29 +53,40 @@ cp -r /chemin/vers/AssetsCleaner/example /var/www/html/glpi/plugins/assetscleane
 ### 3. Configuration initiale
 
 1. Allez dans **Configuration > Général**
-2. Cliquez sur l'onglet **Assets Cleaner**
+2. Cliquez sur l'onglet **♻️ Nettoyage éléments**
 3. Configurez les paramètres :
+   
+   **Section : Nettoyage automatique**
    - ✅ Activer le nettoyage automatique
-   - Jours avant marquage : 30 (ou selon vos besoins)
-   - Action : Mettre hors parc ou Corbeille
-   - ✅ Activer la deuxième action
-   - Jours avant purge : 60
+   - Jours avant mise en corbeille : 30 (ou selon vos besoins)
+   - ✅ Activer la suppression définitive (purge)
+   - Jours en corbeille avant purge : 60
    - Types d'actifs : ☑ Imprimantes (et autres si besoin)
    - ✅ Supprimer les éléments liés
+   
+   **Section : Restauration automatique depuis la corbeille** ✨ Nouveau !
+   - ✅ Activer la restauration automatique
+   - Délai de restauration : 7 jours
+   
 4. Cliquez sur **Enregistrer**
 
-**Note importante** : Le plugin change automatiquement le statut ET met en corbeille. Il cherchera en priorité un état nommé "Hors Parc (Auto)". Créez-le si nécessaire dans **Configuration > Intitulés > État**.
+**Note importante** : Le plugin met automatiquement les actifs en corbeille quand ils ne répondent plus à l'inventaire. Si un actif est à nouveau détecté par l'inventaire dans les 7 jours suivant sa mise en corbeille, il sera automatiquement restauré !
 
 ### 4. Configuration des tâches automatiques
 
 1. Allez dans **Configuration > Actions automatiques**
 2. Recherchez "AssetsCleaner"
-3. Pour chaque tâche (CleanOldAssets et PurgeOldTrash) :
+3. Pour chaque tâche (CleanOldAssets, RestoreInventoriedAssets et PurgeOldTrash) :
    - Cliquez sur le nom de la tâche
    - État : **Activé**
    - Mode d'exécution : **CLI** (recommandé pour les grosses bases)
    - Fréquence d'exécution : **86400** (1 jour = 86400 secondes)
    - Cliquez sur **Enregistrer**
+
+**Nouvelles tâches disponibles** :
+- **CleanOldAssets** : Met en corbeille les actifs obsolètes
+- **RestoreInventoriedAssets** ✨ : Restaure les actifs depuis la corbeille s'ils sont à nouveau inventoriés
+- **PurgeOldTrash** : Purge définitivement les anciens actifs en corbeille
 
 ### 5. Test manuel
 
@@ -86,10 +97,13 @@ Pour tester manuellement les tâches sans attendre le cron :
 cd C:\inetpub\wwwroot\glpi
 
 # Tester la première tâche (nettoyage)
-php bin/console glpi:task:run CleanOldAssets
+php bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronCleanOldAssets'
 
-# Tester la deuxième tâche (purge)
-php bin/console glpi:task:run PurgeOldTrash
+# Tester la deuxième tâche (restauration) ✨ Nouveau !
+php bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronRestoreInventoriedAssets'
+
+# Tester la troisième tâche (purge)
+php bin/console glpi:cron:run -d 'GlpiPlugin\Assetscleaner\AssetsCleaner::cronPurgeOldTrash'
 ```
 
 Ou via l'interface :

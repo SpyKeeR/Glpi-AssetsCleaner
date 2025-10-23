@@ -76,6 +76,16 @@ function plugin_assetscleaner_install()
         ]
     );
 
+    CronTask::Register(
+        AssetsCleaner::class,
+        'RestoreInventoriedAssets',
+        DAY_TIMESTAMP,
+        [
+            'comment' => __('Restore assets from trash if recently inventoried', 'assetscleaner'),
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
+
     return true;
 }
 
