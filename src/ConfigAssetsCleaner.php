@@ -46,7 +46,7 @@ class ConfigAssetsCleaner extends CommonGLPI
     {
         if ($item->getType() == 'Config') {
             return [
-                1 => "<span class='d-flex align-items-center'><i class='ti ti-broom me-2'></i>" 
+                1 => "<span class='d-flex align-items-center'><i class='ti ti-recycle me-2'></i>" 
                      . __('Assets cleanup', 'assetscleaner') . "</span>"
             ];
         }
