@@ -62,3 +62,6 @@ class ProfileAssetsCleaner extends CommonGLPI
         }
     }
 }
+
+// Create alias for GLPI legacy naming convention
+class_alias(ProfileAssetsCleaner::class, 'PluginAssetscleanerProfile');

@@ -46,7 +46,8 @@ class ConfigAssetsCleaner extends CommonGLPI
     {
         if ($item->getType() == 'Config') {
             return [
-                1 => "<i class='ti ti-broom'></i> " . __('Assets cleanup', 'assetscleaner')
+                1 => "<span class='d-flex align-items-center'><i class='ti ti-broom me-2'></i>" 
+                     . __('Assets cleanup', 'assetscleaner') . "</span>"
             ];
         }
         return '';
@@ -276,3 +277,6 @@ class ConfigAssetsCleaner extends CommonGLPI
         return false;
     }
 }
+
+// Create alias for GLPI legacy naming convention
+class_alias(ConfigAssetsCleaner::class, 'PluginAssetscleanerConfig');

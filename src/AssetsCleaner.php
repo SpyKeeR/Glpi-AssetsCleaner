@@ -435,3 +435,6 @@ class AssetsCleaner extends CommonDBTM
         }
     }
 }
+
+// Create alias for GLPI legacy naming convention
+class_alias(AssetsCleaner::class, 'PluginAssetscleanerAssetsCleaner');
