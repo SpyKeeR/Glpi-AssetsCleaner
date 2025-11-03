@@ -6,7 +6,7 @@
 
 [![GLPI Version](https://img.shields.io/badge/GLPI-%E2%89%A5%2011.0.0-blue)](https://glpi-project.org/)
 [![PHP Version](https://img.shields.io/badge/PHP-%E2%89%A5%208.2-purple)](https://www.php.net/)
-[![License](https://img.shields.io/badge/License-GPLv2-green)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![License](https://img.shields.io/badge/License-GPLv3-green)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Version](https://img.shields.io/badge/Version-1.0.3-orange)](https://github.com/SpyKeeR/assetscleaner/releases)
 
 </div>
